@@ -1,0 +1,100 @@
+.programs-div {
+  width: 95%;
+  margin: 25px auto 20px auto;
+}
+.allprograms-heading {
+  font-weight: 400;
+  text-align: center;
+  margin: 4px 0px;
+  color: var(--purpleColor);
+}
+.allprograms-table {
+  width: 100%;
+  padding-bottom: 10px;
+  border: 0.5px solid #e7e5e5;
+  background: none;
+  box-shadow: var(--lightShadow);
+}
+
+.allprograms-table-head {
+  width: 100%;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.allprograms-table-head .allprograms-table-head-row th {
+  padding: 8px 5px;
+  background: var(--purpleColor);
+  color: var(--whiteColor);
+}
+
+.allprograms-table-body {
+  width: 100%;
+}
+
+.program-inner {
+  max-height: 105px;
+  overflow: hidden;
+}
+.allprograms-table-body tr td {
+  padding: 5px;
+  color: var(--greyColor);
+  text-align: center;
+}
+
+td .program-description {
+  text-overflow: ellipsis;
+}
+
+td .program-image {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: cover;
+  overflow: hidden;
+}
+.program-delete-btn {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 14px;
+  padding: 9px 3px;
+  color: var(--whiteColor);
+  background: #da1313;
+  border: none;
+  cursor: pointer;
+}
+
+.allprograms-table-body tr:nth-child(even) {
+  background: #dadada;
+}
+
+.allprograms-table-body tr:nth-child(even) td {
+  color: var(--darkColor);
+}
+
+.readmore-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 14px;
+  padding: 9px 3px;
+  cursor: pointer;
+  color: #810000;
+  border: none;
+}
+
+.continue {
+  background: #005658;
+}
+
+.cancel {
+  background: #c20000;
+}
+
+@media screen and (max-width: 768px) {
+  .allprograms-table-div {
+    overflow-x: scroll;
+  }
+}

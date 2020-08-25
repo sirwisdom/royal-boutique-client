@@ -1,0 +1,11 @@
+.nodata-container {
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nodata-inner-text {
+  font-weight: 400;
+  color: var(--purpleColor);
+}

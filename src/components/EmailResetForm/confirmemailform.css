@@ -1,0 +1,105 @@
+.emailreset-container {
+  margin-top: 20px;
+}
+
+.emailreset-form-wrapper {
+  min-height: 70vh;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.emailreset-form-container {
+  box-shadow: var(--lightShadow);
+  padding: 7px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  max-width: 800px;
+  width: 500px;
+  height: 60vh;
+  border-radius: 0px;
+}
+
+.emailreset-form-header {
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.emailreset-form {
+  width: 95%;
+}
+
+.emailreset-form .emailreset-form-div {
+  width: 100%;
+  display: block;
+  margin: 12px 0px;
+  position: relative;
+}
+
+.emailreset-form-label {
+  display: block;
+  margin-bottom: 3px;
+}
+.emailreset-form-control {
+  display: block;
+  width: 100%;
+  padding: 2px;
+  padding-left: 7px;
+  outline: none;
+  border: 0.5px solid #b6b6b6;
+  border: 0.5px solid none;
+  border-radius: 0px;
+  height: 2.5rem;
+  width: 100%;
+}
+
+.emailreset-form-control:focus {
+  border: 0.5px solid var(--purpleColor);
+  box-shadow: var(--lightShadow);
+}
+
+.emailreset-btn {
+  padding: 7px 10px;
+  margin: 5px 0px;
+  height: 40px;
+  width: 100%;
+  color: var(--whiteColor);
+  background: var(--purpleColor);
+  cursor: pointer;
+  border: none;
+  border-radius: 0px;
+  outline: none;
+  transition: all 0.5s ease-in-out;
+}
+
+.emailreset-btn:hover {
+  background: var(--darkColor);
+}
+
+@media screen and (max-width: 768px) {
+  .emailreset-form-container {
+    box-shadow: 0px 0px 5px var(--greyColor);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    width: 90%;
+  }
+  .emailreset-form-branding {
+    display: none;
+  }
+
+  .emailreset-form {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .emailreset-form {
+    width: 95%;
+  }
+}

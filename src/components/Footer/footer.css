@@ -1,0 +1,33 @@
+.footer-container {
+  margin-top: 10px;
+  background: var(--purpleColor);
+}
+
+.footer-logo-container {
+  padding: 7px;
+}
+.footer-logo-div {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.footer-logo-div img {
+  width: 45px;
+  object-fit: cover;
+}
+.footer-logo-text {
+  color: var(--whiteColor);
+  text-align: center;
+  font-size: 14px;
+  margin: 10px 0px;
+}
+
+@media screen and (max-width: 328px) {
+  .footer-content {
+    width: 95%;
+    padding: 0.5rem;
+  }
+}

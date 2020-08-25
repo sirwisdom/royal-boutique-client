@@ -1,31 +1,119 @@
-.App {
-  text-align: center;
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+:root {
+  --whiteColor: #ffffff;
+  --lightColor: #f0eeee;
+  --purpleColor: #44003e;
+  --hoverColor: #cf0358;
+  --greyColor: #707070;
+  --darkColor: #000000;
+  --lightShadow: 0px 0px 7px #c0bdbd8c;
+  --darkShadow: 3px 4px 5px 0px rgba(0, 0, 0, 0.5);
 }
-
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.app-container {
+  min-height: 85vh;
 }
 
-.App-link {
-  color: #61dafb;
+.text-danger {
+  font-size: 13px;
+  color: #da0505;
+}
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  background: var(--lightColor);
+  /* box-shadow: var(--lightShadow); */
+}
+
+.pagination-page {
+  text-align: center;
+  color: var(--whiteColor);
+  display: block;
+  min-width: 30px;
+  margin: 0px 4px;
+  /* background: yellow; */
+}
+.pagination-link {
+  text-align: center;
+  font-weight: 500;
+  color: var(--darkColor);
+  outline: none;
+  border: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0px 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.pagination-previous {
+  margin: 0px 3px;
+  color: var(--darkColor);
+  cursor: pointer;
+  transition: all 0.3s ease-in;
+}
+.pagination-previous-link {
+  display: block;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+}
+.pagination-previous:hover {
+  color: var(--whiteColor);
+  background: var(--greyColor);
+}
+
+.pagination-next {
+  margin: 0px 3px;
+  color: var(--darkColor);
+  cursor: pointer;
+  transition: all 0.3s ease-in;
+}
+.pagination-next-link {
+  display: block;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+}
+.pagination-next:hover {
+  color: var(--whiteColor);
+  background: var(--greyColor);
+}
+
+.pagination-active {
+  background: var(--darkColor);
+  color: var(--whiteColor);
+}
+@media screen and (max-width: 768px) {
+  .app-container {
+    width: 100%;
+  }
 }
 
 @keyframes App-logo-spin {

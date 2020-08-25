@@ -1,0 +1,119 @@
+.testimony-approval-div {
+  width: 90%;
+  margin: 10px auto 10px auto;
+}
+.testimony-approval-heading {
+  font-weight: 400;
+  text-align: center;
+  margin: 4px 0px;
+  color: var(--purpleColor);
+}
+
+.testimony-approval-name {
+  font-weight: 400;
+  margin: 5px 0px;
+  color: var(--purpleColor);
+}
+.testimony-approval-date {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: var(--purpleColor);
+}
+
+.testimony-approval-btn {
+  display: block;
+  border: none;
+  margin-top: 20px;
+  width: 150px;
+  padding: 8px 4px;
+  color: var(--whiteColor);
+  background: var(--purpleColor);
+  box-shadow: var(--darkShadow);
+  cursor: pointer;
+  transition: all 0.3s ease-in;
+}
+
+.testimony-approval-btn:hover {
+  color: var(--whiteColor);
+  background: var(--darkColor);
+}
+
+.testimony-btn-div {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.testimony-delete-btn {
+  display: block;
+  border: none;
+  margin-top: 20px;
+  width: 150px;
+  padding: 8px 4px;
+  color: var(--whiteColor);
+  background: #da1313;
+  box-shadow: var(--darkShadow);
+  cursor: pointer;
+  transition: all 0.3s ease-in;
+}
+
+.testimony-delete-btn:hover {
+  color: var(--whiteColor);
+  background: var(--darkColor);
+}
+
+.approve-modal {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1500;
+  background: #f19aeca2;
+}
+
+.approve-modal-inner {
+  border-radius: 7px;
+  width: 400px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: var(--purpleColor);
+  box-shadow: 0px 0px 3px #f181fc;
+}
+
+.approve-modal-inner p {
+  color: var(--whiteColor);
+  text-align: center;
+  font-weight: 300;
+  line-height: 1.6rem;
+  margin-bottom: 10px;
+}
+
+.approve-btn-div .continue,
+.cancel {
+  width: 150px;
+  height: 40px;
+  text-align: center;
+  margin: 20px 5px;
+  cursor: pointer;
+  color: var(--whiteColor);
+  border: none;
+}
+
+.continue {
+  background: #005658;
+  box-shadow: var(--darkShadow);
+}
+
+.cancel {
+  background: #c20000;
+  box-shadow: var(--darkShadow);
+}

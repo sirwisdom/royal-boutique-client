@@ -1,0 +1,29 @@
+.loading-div {
+  width: 100vw;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* background: chartreuse; */
+}
+
+.loading-icon {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.loading-text {
+  margin-top: 5px;
+  text-align: center;
+  color: var(--hoverColor);
+}
+
+@media screen and (max-width: 441px) {
+  .loading-icon {
+    width: 60px;
+    height: 60px;
+  }
+}

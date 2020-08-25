@@ -1,0 +1,76 @@
+.editbranch-wrapper {
+  margin: 10px auto 10px auto;
+  padding: 5px;
+  width: 90%;
+}
+
+.editbranch-heading {
+  text-align: center;
+  font-weight: 400;
+  margin: 7px 0px;
+}
+
+.editbranch-form-div {
+  width: 100%;
+}
+
+.editbranch-form {
+  width: 100%;
+  margin: 5px auto;
+  padding: 0px;
+}
+
+.editbranch-form-group {
+  width: 100%;
+  display: block;
+  margin: 10px 0px;
+}
+.editbranch-form .editbranch-form-control {
+  margin-top: 3px;
+  display: block;
+  width: 100%;
+  padding: 2px;
+  padding-left: 4px;
+  outline: none;
+  border: 0.5px solid #b6b6b6;
+  border-radius: 0px;
+  height: 37px;
+}
+
+.editbranch-form .editbranch-form-control:focus {
+  border: 0.5px solid var(--darkColor);
+  box-shadow: var(--lightShadow);
+}
+
+#editbranch {
+  display: block;
+  border-radius: 0px;
+  padding: 5px;
+  margin: 5px 0px;
+}
+
+.editbranch-btn {
+  display: block;
+  border: none;
+  margin-top: 20px;
+  width: 150px;
+  padding: 8px 4px;
+  color: var(--whiteColor);
+  background: var(--purpleColor);
+  box-shadow: var(--darkShadow);
+  cursor: pointer;
+  transition: all 0.3s ease-in;
+}
+
+.editbranch-btn:hover {
+  color: var(--whiteColor);
+  background: var(--darkColor);
+}
+
+@media screen and (max-width: 441px) {
+  .editbranch-wrapper {
+    margin: 10px auto 10px auto;
+    padding: 3px;
+    width: 100%;
+  }
+}
