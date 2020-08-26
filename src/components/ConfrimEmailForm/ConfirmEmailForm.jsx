@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
+import axios from "axios";
+import { store } from "react-notifications-component";
 import * as yup from "yup";
+import { url } from "../../config";
 
 import "./confirmemailform.css";
 
@@ -15,9 +18,58 @@ const ConfirmEmailForm = () => {
     email: yup.string().email().min(6).max(255).required("Enter a valid email"),
   });
 
-  const handleSubmit = (data) => {
-    const formData = { email: data.email };
-    console.log(formData);
+  const handleSubmit = async (values) => {
+    try {
+      setSubmitting(true);
+      const result = await axios.post(`${url}/admin/confirmEmail`, values);
+      if (result.status === 200) {
+        setSubmitting(false);
+        return store.addNotification({
+          message: `An email have been sent to your email address with instructions to reset your password`,
+          type: "success",
+          insert: "top",
+          container: "top-center",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 6000,
+            onScreen: true,
+          },
+        });
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 4000);
+      }
+    } catch (error) {
+      console.log(error);
+      setSubmitting(false);
+      if (error.response.status === 400) {
+        return store.addNotification({
+          message: `No user with email "${values.email}" was found `,
+          type: "danger",
+          insert: "top",
+          container: "top-center",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 6000,
+            onScreen: true,
+          },
+        });
+      }
+      store.addNotification({
+        message: `Sorry, an unexpected error occured while verifying your email`,
+        type: "danger",
+        insert: "top",
+        container: "top-center",
+        animationIn: ["animated", "fadeIn"],
+        animationOut: ["animated", "fadeOut"],
+        dismiss: {
+          duration: 4000,
+          onScreen: true,
+        },
+      });
+    }
   };
   return (
     <section className="emailreset-container">

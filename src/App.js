@@ -12,7 +12,7 @@ import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import Login from "./components/Login/Login";
 import SignUp from "./components/SignUp/SignUp";
-import ConfirmEmailForm from "./components/EmailResetForm/ConfirmEmailForm";
+import ConfirmEmailForm from "./components/ConfrimEmailForm/ConfirmEmailForm";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
 import store from "./redux/store";
 import {
@@ -36,6 +36,7 @@ import UploadBranch from "./components/UploadBranch/UploadBranch";
 import EditBranch from "./components/EditBranch/EditBranch";
 import FourZeroFour from "./components/FourZeroFour/FourZeroFour";
 import { useSelector } from "react-redux";
+import LivePage from "./components/LivePage/LivePage";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
@@ -75,6 +76,11 @@ function App() {
           <Route
             path="/dashboard/:userId/approvetestimonies/:testimonyId"
             component={Authenticate(Testimony)}
+          />{" "}
+          <Route
+            path="/dashboard/:userId/livepage"
+            component={Authenticate(LivePage)}
+            exact
           />{" "}
           <Route
             path="/dashboard/:userId/approvetestimonies"

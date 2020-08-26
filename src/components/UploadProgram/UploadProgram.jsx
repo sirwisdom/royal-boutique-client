@@ -178,14 +178,7 @@ function UploadProgram() {
                   />
                 </div>
                 {isUploading ? (
-                  <button
-                    type="submit"
-                    disabled
-                    className="uploadprogram-btn"
-                    onClick={() => {
-                      handleSubmit();
-                    }}
-                  >
+                  <button type="submit" disabled className="uploadprogram-btn">
                     Uploading
                   </button>
                 ) : (

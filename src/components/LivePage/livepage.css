@@ -1,0 +1,74 @@
+.livepage-div {
+  width: 90%;
+  margin: 10px auto 10px auto;
+}
+
+.livepage-heading {
+  text-align: center;
+  font-weight: 400;
+  color: var(--purpleColor);
+  margin: 2px 0px;
+}
+
+.uploadprogram-form-div {
+  width: 100%;
+}
+
+.livepage-form {
+  width: 100%;
+  margin: 5px auto;
+  padding: 0px;
+}
+
+.livepage-form-group {
+  width: 100%;
+  display: block;
+  margin: 10px 0px;
+}
+
+.livepage-form-label {
+  display: inline-block;
+  /* margin-bottom: 2px; */
+}
+
+#livePageUrl {
+  display: block;
+  width: 100%;
+  padding: 2px;
+  padding-left: 10px;
+  outline: none;
+  border: 0.5px solid #b6b6b6;
+  border: 0.5px solid none;
+  border-radius: 0px;
+  height: 2.2rem;
+  width: 100%;
+}
+#livePageUrl:focus {
+  border: 0.5px solid var(--darkColor);
+  box-shadow: var(--lightShadow);
+}
+
+.uploadUrl-btn {
+  display: block;
+  border: none;
+  margin-top: 20px;
+  width: 150px;
+  padding: 8px 4px;
+  color: var(--whiteColor);
+  background: var(--purpleColor);
+  box-shadow: var(--darkShadow);
+  cursor: pointer;
+  transition: all 0.3s ease-in;
+}
+
+.uploadUrl-btn:hover {
+  color: var(--whiteColor);
+  background: var(--darkColor);
+}
+
+@media screen and (max-width: 441px) {
+  .livepage-div {
+    padding: 4px;
+    width: 100%;
+  }
+}
