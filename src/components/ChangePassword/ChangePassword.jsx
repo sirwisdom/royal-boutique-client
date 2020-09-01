@@ -1,58 +1,133 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
-// import toast from "siiimple-toast";
+import { store } from "react-notifications-component";
+import { Link } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 import * as yup from "yup";
 import "./changepassword.css";
-import { useSelector } from "react-redux";
 import { url } from "../../config";
 import axios from "axios";
 
-const ChangePassword = () => {
+const ChangePassword = (props) => {
+  const token = props.match.params.token;
+
+  const [isTokenExpired, setIsTokenExpired] = useState(false);
   const [isSubmitting, setisSubmitting] = useState(false);
   const initialValues = {
     password: "",
     confirmPassword: "",
   };
 
-  const user = useSelector((state) => state.user);
+  useEffect(() => {
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+
+        if (decodedToken !== undefined) {
+          console.log("decodedddd", decodedToken);
+          if (decodedToken.exp < new Date().getTime() / 1000) {
+            setIsTokenExpired(true);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    // return () => {
+
+    // }
+  }, []);
 
   let changePasswordSchema = yup.object().shape({
     password: yup.string().min(6).max(50).required("Enter a new password"),
-    confirmPassword: yup.string().min(6).max(50).required(),
+    confirmPassword: yup
+      .string()
+      .min(6)
+      .max(50)
+      .required("Your password don't match"),
   });
 
   const handleSubmit = async (data) => {
     if (data.password !== data.confirmPassword) {
-      // return toast.alert("Your passwords don't match", {
-      //   duration: 5000,
-      // });
+      return store.addNotification({
+        message: `Your password does not match`,
+        type: "warning",
+        insert: "top",
+        container: "top-center",
+        animationIn: ["animated", "fadeIn"],
+        animationOut: ["animated", "fadeOut"],
+        dismiss: {
+          duration: 6000,
+          onScreen: true,
+        },
+      });
     }
     setisSubmitting(true);
-    const formData = new FormData();
 
-    formData.append("password", data.password);
     try {
-      const result = await axios.put(
-        `${url}/users/${user.data.data._id}`,
-        formData
-      );
+      const result = await axios.put(`${url}/admin/resetPassword/${token}`, {
+        password: data.password,
+      });
       if (result.status === 200)
-        // toast.success("Your password have been successfully updated", {
-        //   duration: 5000,
-        // });
-        setisSubmitting(false);
+        store.addNotification({
+          message: `Your password have been updated successfully`,
+          type: "success",
+          insert: "top",
+          container: "top-center",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 5000,
+            onScreen: true,
+          },
+        });
+      setisSubmitting(false);
       setTimeout(() => {
-        window.location.href = `/dashboard/${user.data.data._id}/account/change-password`;
-      }, 3000);
+        window.location.href = `/login`;
+      }, 5000);
     } catch (error) {
       console.log(error);
-      // toast.alert("Sorry, could not update your password");
+      if (error.response && error.response.data) {
+        setisSubmitting(false);
+        return store.addNotification({
+          message: `${error.response.data.msg}`,
+          type: "danger",
+          insert: "top",
+          container: "top-center",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 4000,
+            onScreen: true,
+          },
+        });
+      }
+
+      store.addNotification({
+        message: `Sorry, your password could not be updated`,
+        type: "danger",
+        insert: "top",
+        container: "top-center",
+        animationIn: ["animated", "fadeIn"],
+        animationOut: ["animated", "fadeOut"],
+        dismiss: {
+          duration: 4000,
+          onScreen: true,
+        },
+      });
       setisSubmitting(false);
     }
   };
   return (
     <>
       <div className="change-password-form-wrapper ">
+        {isTokenExpired ? (
+          <div className="text-danger">
+            {" "}
+            <i className="fas fa-exclamation-circle"></i> The token provided
+            have expired, <Link to="/confirmemail">generate a new request</Link>
+          </div>
+        ) : null}
         <div className="change-password-form-container ">
           <div className="change-password-form">
             <h2 className="change-password-heading">Change Password</h2>
@@ -125,6 +200,7 @@ const ChangePassword = () => {
                     <button
                       type="submit"
                       className="change-password-btn btn-block"
+                      disabled={isTokenExpired}
                     >
                       Submit
                     </button>

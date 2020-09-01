@@ -55,7 +55,22 @@ function UploadSermon() {
       }
     } catch (error) {
       console.log(error);
+      console.log(error.response);
       setIsUploading(false);
+      if (error.response && error.response.data) {
+        return store.addNotification({
+          message: `${error.response.data.msg}`,
+          type: "danger",
+          insert: "top",
+          container: "top-center",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 6000,
+            onScreen: true,
+          },
+        });
+      }
       store.addNotification({
         message: `Sorry, an unexpected error occured while uploading the sermon`,
         type: "danger",
@@ -115,6 +130,7 @@ function UploadSermon() {
                   <input
                     type="file"
                     id="sermon"
+                    accept=".mp3,"
                     name="sermon"
                     onChange={(event) => {
                       setFieldValue("sermon", event.currentTarget.files[0]);

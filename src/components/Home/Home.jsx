@@ -93,7 +93,9 @@ function Home() {
               <img src={Image8} alt="all programs " className="overview-img" />
             </div>
 
-            <Link to={`/dashboard/${userData._id}/livepage`}>Live Page</Link>
+            <Link to={`/dashboard/${userData._id}/uploadbranch`}>
+              Upload Branch
+            </Link>
           </div>
 
           <div className="overview-single" id="overview-8">

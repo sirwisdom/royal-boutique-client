@@ -32,7 +32,7 @@ const ConfirmEmailForm = () => {
           animationIn: ["animated", "fadeIn"],
           animationOut: ["animated", "fadeOut"],
           dismiss: {
-            duration: 6000,
+            duration: 10000,
             onScreen: true,
           },
         });
@@ -43,7 +43,7 @@ const ConfirmEmailForm = () => {
     } catch (error) {
       console.log(error);
       setSubmitting(false);
-      if (error.response.status === 400) {
+      if (error.response && error.response.status === 400) {
         return store.addNotification({
           message: `No user with email "${values.email}" was found `,
           type: "danger",

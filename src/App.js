@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  Route,
-  Switch,
-  Redirect,
-  BrowserRouter as Router,
-} from "react-router-dom";
+import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
 import "react-notifications-component/dist/theme.css";
@@ -35,11 +30,9 @@ import AllBranches from "./components/AllBranches/AllBranches";
 import UploadBranch from "./components/UploadBranch/UploadBranch";
 import EditBranch from "./components/EditBranch/EditBranch";
 import FourZeroFour from "./components/FourZeroFour/FourZeroFour";
-import { useSelector } from "react-redux";
 import LivePage from "./components/LivePage/LivePage";
 
 function App() {
-  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   if (localStorage.JWT_TOKEN) {
     setAuthorizationHeader(localStorage.JWT_TOKEN);
     try {
@@ -88,7 +81,7 @@ function App() {
             exact
           />{" "}
           <Route
-            path="/dashboard/:userId/newbranch"
+            path="/dashboard/:userId/uploadbranch"
             component={Authenticate(UploadBranch)}
             exact
           />{" "}
@@ -123,11 +116,13 @@ function App() {
             exact
           />{" "}
           <Route path="/dashboard" component={Authenticate(Home)} exact />
-          <Route exact path="/">
-            {isAuthenticated ? <Redirect to="/" /> : <Login />}
-          </Route>
+          <Route exact path="/login" component={Login} />
           <Route path="/confirmemail" component={ConfirmEmailForm} exact />
-          <Route path="/changepassword" component={ChangePassword} exact />
+          <Route
+            path="/changepassword/:token"
+            component={ChangePassword}
+            exact
+          />
           <Route path="/signup" component={SignUp} exact />
           <Route path="/login" component={Login} exact />
           <Route path="*" component={() => <FourZeroFour />} />

@@ -30,7 +30,7 @@ function EditProgram(props) {
   if (initialProgram) {
     initialValues = {
       description: initialProgram.description,
-      programStartDate: new Date(initialProgram.programStartDate).getDate(),
+      programStartDate: initialProgram.programStartDate,
       programTime: initialProgram.programTime,
       programTitle: initialProgram.programTitle,
     };

@@ -59,26 +59,48 @@ export function authenticateUser(data) {
 export function signUpUser(data) {
   return (dispatch) => {
     dispatch({ type: "SIGNING_USER" });
-
     axios
       .post(`${url}/admin/adminRegister`, data)
       .then((res) => {
         dispatch({ type: "REGISTER_USER" });
         console.log("response", res);
-        if (res.status >= 400) {
-          if (res.response && res.response.msg) {
-            // toast.alert(res.response.msg);
-          }
+
+        if (res.status === 200) {
+          store.addNotification({
+            message: `Your account have been created successfully`,
+            type: "success",
+            insert: "top",
+            container: "top-center",
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: {
+              duration: 4000,
+              onScreen: true,
+            },
+          });
+          dispatch({ type: "COMPLETE_SIGNING_USER" });
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 4000);
         }
-        // if (res.response) toast.success(res.response.data.msg);
-        if (res.status === 200) window.location.href = "/login";
       })
       .catch((err) => {
+        console.log(err);
         dispatch({ type: "COMPLETE_SIGNING_USER" });
         dispatch(setSignUpErrors(err.message));
-
-        if (err.response) {
-          // toast.alert(err.response.data.msg);
+        if (err.response && err.response.data && err.response.data.msg) {
+          return store.addNotification({
+            message: `${err.response.data.msg}`,
+            type: "danger",
+            insert: "top",
+            container: "top-center",
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: {
+              duration: 6000,
+              onScreen: true,
+            },
+          });
         }
       });
   };
