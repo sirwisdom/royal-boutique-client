@@ -20,12 +20,10 @@ function EditProgram(props) {
       .get(`${url}/programs/${programId}`)
       .then((res) => {
         setInitialProgram(res.data);
-        initialValues = res.data;
-
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [programId]);
 
   if (initialProgram) {
     initialValues = {
@@ -106,7 +104,7 @@ function EditProgram(props) {
               handleSubmit(values);
             }}
           >
-            {({ errors, touched, handleChange, handleBlur }) => (
+            {({ errors, touched, handleChange }) => (
               <Form>
                 <div className="program-form-group">
                   <label htmlFor="programTitle" className="program-form-label">

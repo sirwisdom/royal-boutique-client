@@ -51,6 +51,7 @@ function App() {
     }
   }
   const [showNav, setShowNav] = useState(false);
+  // git remote add origin https://github.com/sirwisdom/mfmss4admin-new.git
   return (
     <Router>
       <Navbar showNav={showNav} setShowNav={setShowNav} />

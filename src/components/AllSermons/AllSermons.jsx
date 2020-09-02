@@ -18,7 +18,7 @@ function AllSermons() {
   const [filteredSermons, setFilteredSermons] = useState([]);
 
   const perPage = 100;
-  let offSet = 0;
+  const offSet = 0;
   useEffect(() => {
     window.scrollTo(0, 0);
     axios

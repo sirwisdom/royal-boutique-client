@@ -36,7 +36,7 @@ const ChangePassword = (props) => {
     // return () => {
 
     // }
-  }, []);
+  }, [token]);
 
   let changePasswordSchema = yup.object().shape({
     password: yup.string().min(6).max(50).required("Enter a new password"),

@@ -23,7 +23,7 @@ function EditBranch(props) {
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [branchId]);
 
   if (!loading) {
     initialValues = {

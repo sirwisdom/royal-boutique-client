@@ -24,7 +24,7 @@ function Testimony(props) {
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [testimonyId]);
 
   const handleApprove = async () => {
     try {
