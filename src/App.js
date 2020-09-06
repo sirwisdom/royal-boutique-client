@@ -116,7 +116,7 @@ function App() {
             component={Authenticate(UploadSermon)}
             exact
           />{" "}
-          <Route path="/dashboard" component={Authenticate(Home)} exact />
+          <Route path="/" component={Authenticate(Home)} exact />
           <Route exact path="/login" component={Login} />
           <Route path="/confirmemail" component={ConfirmEmailForm} exact />
           <Route

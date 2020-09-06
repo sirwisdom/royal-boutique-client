@@ -6,6 +6,7 @@ import { store } from "react-notifications-component";
 import * as Yup from "yup";
 import { url } from "../../config";
 import "./uploadsermon.css";
+import DisabledButton from "../Utils/DisabledButton/DisabledButton";
 
 function UploadSermon() {
   const userData = useSelector((state) => state.user.data);
@@ -19,12 +20,13 @@ function UploadSermon() {
 
   const SermonSchema = Yup.object({
     title: Yup.string().min(2).required("Title is a required field"),
-    sermon: Yup.string().min(3).required("Sermon is a required field"),
+    sermon: Yup.string()
+      .min(3)
+      .required("Sermon is required and must be an audio mp3 file"),
   });
 
   const handleSubmit = async (values) => {
     const { sermon, title } = values;
-
     const formData = new FormData();
     formData.append("file", sermon);
     formData.append("title", title);
@@ -133,25 +135,28 @@ function UploadSermon() {
                     accept=".mp3,"
                     name="sermon"
                     onChange={(event) => {
-                      setFieldValue("sermon", event.currentTarget.files[0]);
                       // if (fileType[0].type !== "audio/mpeg") {
                       //   sermonRef.current.value = null;
                       //   return;
                       // }
+                      if (
+                        event.currentTarget.files[0] &&
+                        event.currentTarget.files[0].type === "audio/mpeg"
+                      ) {
+                        setFieldValue("sermon", event.currentTarget.files[0]);
+                      }
                     }}
                   />
+                  {errors.sermon && touched.sermon ? (
+                    <div className="text-danger">
+                      {" "}
+                      <i className="fas fa-exclamation-circle"></i>{" "}
+                      {errors.sermon}
+                    </div>
+                  ) : null}
                 </div>
                 {isUploading ? (
-                  <button
-                    type="submit"
-                    disabled
-                    className="uploadsermon-btn"
-                    onClick={() => {
-                      handleSubmit();
-                    }}
-                  >
-                    Uploading
-                  </button>
+                  <DisabledButton text={"Uploading"} />
                 ) : (
                   <button
                     type="submit"

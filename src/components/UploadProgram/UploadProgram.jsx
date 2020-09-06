@@ -6,6 +6,7 @@ import { store } from "react-notifications-component";
 import * as Yup from "yup";
 import { url } from "../../config";
 import "./uploadprogram.css";
+import DisabledButton from "../Utils/DisabledButton/DisabledButton";
 
 function UploadProgram() {
   const userData = useSelector((state) => state.user.data);
@@ -178,9 +179,7 @@ function UploadProgram() {
                   />
                 </div>
                 {isUploading ? (
-                  <button type="submit" disabled className="uploadprogram-btn">
-                    Uploading
-                  </button>
+                  <DisabledButton text={"Uploading"} />
                 ) : (
                   <button
                     type="submit"

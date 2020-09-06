@@ -5,6 +5,7 @@ import { store } from "react-notifications-component";
 import * as Yup from "yup";
 import { url } from "../../config";
 import "./uploadbranch.css";
+import DisabledButton from "../Utils/DisabledButton/DisabledButton";
 
 function UploadBranch() {
   const [isUploading, setIsUploading] = useState(false);
@@ -132,16 +133,7 @@ function UploadBranch() {
                   ) : null}
                 </div>
                 {isUploading ? (
-                  <button
-                    type="submit"
-                    disabled
-                    className="uploadbranch-btn"
-                    onClick={() => {
-                      handleSubmit();
-                    }}
-                  >
-                    Uploading
-                  </button>
+                  <DisabledButton text={"Uploading"} />
                 ) : (
                   <button
                     type="submit"

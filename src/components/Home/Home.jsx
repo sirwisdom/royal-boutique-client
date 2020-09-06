@@ -17,9 +17,9 @@ function Home() {
   return (
     <div className="home-div">
       <section className="userwelcome-div">
-        <h3 className="userwelcome-text">
+        <h5 className="userwelcome-text">
           Welcome {userData.firstName} {userData.lastName}
-        </h3>
+        </h5>
       </section>
       {/* End of Hero Header Section    */}
 

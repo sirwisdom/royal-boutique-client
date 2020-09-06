@@ -18,7 +18,7 @@ export function loginUser(data) {
         const decodedToken = jwtDecode(token);
         dispatch(setUser(decodedToken));
 
-        window.location.href = `/dashboard`;
+        window.location.href = `/`;
         dispatch({
           type: "COMPLETE_LOGINING_USER",
         });

@@ -16,7 +16,7 @@ export default function Navbar() {
       {userData && userData.isAuthenticated ? (
         <nav className={showNavbar ? "navbar-nav" : " navbar-nav hideNav"}>
           <div className="logo-div">
-            <NavLink to={`/dashboard`}>
+            <NavLink to={`/`}>
               {" "}
               <img src={logo} alt="logo" />
             </NavLink>
@@ -24,7 +24,7 @@ export default function Navbar() {
           <ul className="nav-ul">
             <li className="nav-li">
               <NavLink
-                to={`/dashboard`}
+                to={`/`}
                 activeStyle={{
                   fontWeight: "500",
                   color: "#cf0358",
@@ -47,7 +47,7 @@ export default function Navbar() {
                 className="nav-li-link"
                 onClick={() => dispatch(hideNavbar())}
               >
-                Upload Sermons
+                Upload Sermon
               </NavLink>
             </li>
             <li className="nav-li">
@@ -75,7 +75,7 @@ export default function Navbar() {
                 className="nav-li-link"
                 onClick={() => dispatch(hideNavbar())}
               >
-                Approve Testimonies
+                Approve Testimony
               </NavLink>
             </li>
             <li className="nav-li">
