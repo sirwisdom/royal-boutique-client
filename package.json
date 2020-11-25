@@ -1,5 +1,5 @@
 {
-  "name": "mfmwebsite-admin",
+  "name": "royal-boutique-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,8 +13,11 @@
     "moment": "^2.27.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-image-gallery": "^1.0.8",
     "react-notifications-component": "^2.4.0",
+    "react-number-format": "^4.4.1",
     "react-paginate": "^6.3.2",
+    "react-paystack": "^3.0.2",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",

@@ -1,0 +1,35 @@
+.brand-inner-div {
+  position: absolute;
+  background: #000000a9;
+  width: 200px;
+  padding: 1px 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* perspective: 100px; */
+  box-shadow: var(--darkShadow);
+}
+.branding-text {
+  font-weight: 400;
+  color: var(--whiteColor);
+  margin-bottom: 5px;
+}
+.brand-inner-div a {
+  display: block;
+  width: 70%;
+  margin: 2px auto;
+  padding: 4px 5px;
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: var(--darkColor);
+  background: var(--whiteColor);
+
+  transition: all 0.5s ease-in;
+}
+.brand-inner-div a:hover {
+  color: var(--whiteColor);
+  background: var(--brownColor);
+}

@@ -1,0 +1,444 @@
+.hero-header-div {
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  background: var(--darkGrey);
+  position: relative;
+  perspective: 100px;
+  height: 100vh;
+  transform-style: preserve-3d;
+}
+.hero-header-div::before {
+  content: "";
+  animation: fade-slide-down 4s 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)
+    forwards;
+  background: linear-gradient(#1616169f, #0a0a0a69), url(../../Assets/img6.jpeg);
+  background-position: top center;
+  background-size: cover;
+  opacity: 0;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: -1;
+}
+.hero-header-div::after {
+  content: "";
+  background: #f9fcff;
+  height: 40rem;
+  position: absolute;
+  top: 90%;
+  left: -5%;
+  right: -5%;
+  transform-origin: 0 0;
+  transform: rotateZ(-4deg);
+  border: none;
+}
+.hero-header-text-container {
+  margin: 0 auto;
+  width: 95%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(-10px);
+}
+.hero-heading {
+  color: var(--whiteColor);
+  text-align: center;
+  text-transform: uppercase;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 400;
+  font-size: 2rem;
+}
+
+.hero-btn {
+  padding: 5px;
+  display: block;
+  margin: 8px 0px;
+  height: 37px;
+  width: 150px;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--darkColor);
+  background: var(--goldColor);
+  border: none;
+  border-radius: 0px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  transform: translateZ(0.1px);
+  box-shadow: var(--darkShadow);
+  z-index: 10;
+}
+
+.home-branding-header {
+  text-align: center;
+  margin: 4px auto 15px auto;
+  font-weight: 500;
+  color: var(--brownColor);
+}
+.home-branding {
+  margin: 5px auto;
+  width: 90%;
+  max-width: 1080px;
+  height: 80vh;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+}
+
+.homebranding-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#inner1 {
+  grid-row: 1/5;
+  grid-column: 1/3;
+  overflow: hidden;
+  position: relative;
+}
+#inner1 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#inner2 {
+  grid-row: 3/5;
+  grid-column: 3/5;
+  overflow: hidden;
+}
+#inner2 img {
+  width: 100%;
+  object-fit: cover;
+}
+#inner5 {
+  grid-row: 5/7;
+  grid-column: 1/3;
+  overflow: hidden;
+}
+#inner5 img {
+  width: 100%;
+  object-fit: cover;
+}
+
+#inner3 {
+  grid-row: 1/5;
+  grid-column: 5/7;
+  overflow: hidden;
+}
+#inner3 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#inner4 {
+  grid-row: 1/3;
+  grid-column: 3/5;
+  overflow: hidden;
+}
+#inner4 img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.feature-section {
+  margin: 10px auto;
+}
+.collection-div {
+  margin: 6px auto;
+  max-width: 1080px;
+  width: 90%;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 268px));
+  gap: 2px;
+}
+
+@media screen and (max-width: 800px) {
+  .home-branding-header {
+    text-align: center;
+    margin: 4px auto 15px auto;
+    font-weight: 500;
+    color: var(--brownColor);
+  }
+  .home-branding {
+    margin: 5px auto;
+    width: 90%;
+    max-width: 900;
+    height: 90vh;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3px;
+  }
+
+  .homebranding-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #inner1 {
+    grid-row: 1/3;
+    grid-column: 1/3;
+    overflow: hidden;
+    position: relative;
+  }
+  #inner1 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .brand-inner-div {
+    position: absolute;
+    background: #000000a9;
+    width: 200px;
+    padding: 1px 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* perspective: 100px; */
+    box-shadow: var(--darkShadow);
+  }
+  .branding-text {
+    font-weight: 400;
+    color: var(--whiteColor);
+    margin-bottom: 5px;
+  }
+  .brand-inner-div a {
+    display: block;
+    width: 70%;
+    margin: 2px auto;
+    padding: 3px 4px;
+    text-align: center;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: var(--whiteColor);
+    background: var(--brownColor);
+    transition: all 0.5s ease-in;
+  }
+  .brand-inner-div a:hover {
+    color: var(--whiteColor);
+    background: var(--darkColor);
+  }
+  #inner2 {
+    grid-row: 3/5;
+    grid-column: 1/3;
+    overflow: hidden;
+  }
+  #inner2 img {
+    width: 100%;
+    object-fit: cover;
+  }
+  #inner5 {
+    grid-row: 3/5;
+    grid-column: 1/3;
+    overflow: hidden;
+  }
+  #inner5 img {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  #inner3 {
+    grid-row: 3/5;
+    grid-column: 3/5;
+    overflow: hidden;
+  }
+  #inner3 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #inner4 {
+    grid-row: 1/3;
+    grid-column: 3/5;
+    overflow: hidden;
+  }
+  #inner4 img {
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .overview-container {
+    max-width: 1000px;
+    width: 90%;
+    margin: 10px auto 10px auto;
+    padding: 5px;
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .overview-single {
+    padding: 4px;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: var(--lightShadow);
+  }
+
+  .overview-img-div {
+    width: 100%;
+    /* height: auto; */
+    overflow: hidden;
+  }
+
+  .overview-img-div img {
+    width: 100%;
+    /* height: 100%; */
+    object-fit: cover;
+  }
+}
+
+@media screen and (max-width: 441px) {
+  .home-branding-header {
+    text-align: center;
+    margin: 7px auto 15px auto;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--brownColor);
+  }
+  .home-branding {
+    margin: 5px auto;
+    width: 100%;
+    padding: 4px;
+    height: auto;
+    overflow: hidden;
+    display: block;
+  }
+
+  .homebranding-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+    overflow: hidden;
+    width: 95%;
+    margin: 7px auto;
+    box-shadow: var(--lightShadow);
+  }
+
+  #inner1 {
+    grid-row: 1/3;
+    grid-column: 1/3;
+    overflow: hidden;
+    position: relative;
+  }
+  #inner1 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .brand-inner-div {
+    position: absolute;
+    background: #000000a9;
+    width: 200px;
+    padding: 1px 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* perspective: 100px; */
+    box-shadow: var(--darkShadow);
+  }
+  .branding-text {
+    font-weight: 400;
+    color: var(--whiteColor);
+    margin-bottom: 5px;
+  }
+  .brand-inner-div a {
+    display: block;
+    width: 70%;
+    margin: 2px auto;
+    padding: 3px 4px;
+    text-align: center;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: var(--whiteColor);
+    background: var(--brownColor);
+    transition: all 0.5s ease-in;
+  }
+  .brand-inner-div a:hover {
+    color: var(--whiteColor);
+    background: var(--darkColor);
+  }
+  #inner2 {
+    grid-row: 3/5;
+    grid-column: 1/3;
+    overflow: hidden;
+  }
+  #inner2 img {
+    width: 100%;
+    object-fit: cover;
+  }
+  #inner5 {
+    grid-row: 3/5;
+    grid-column: 1/3;
+    overflow: hidden;
+  }
+  #inner5 img {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  #inner3 {
+    grid-row: 3/5;
+    grid-column: 3/5;
+    overflow: hidden;
+  }
+  #inner3 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #inner4 {
+    grid-row: 1/3;
+    grid-column: 3/5;
+    overflow: hidden;
+  }
+  #inner4 img {
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+@keyframes fade-slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-4rem);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}

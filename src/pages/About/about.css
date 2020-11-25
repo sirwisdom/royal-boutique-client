@@ -1,0 +1,59 @@
+.about-image-branding {
+  height: 410px;
+  overflow: hidden;
+  background: url(../../Assets/img4.jpeg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center bottom;
+}
+.about-image {
+  width: 100%;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.about-container {
+  width: 90%;
+  margin: 5px auto;
+}
+
+.vision-div {
+  padding: 7px 0px;
+  margin: 5px 0px;
+}
+.vision-header {
+  margin: 5px 0px;
+  color: var(--brownColor);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.product-ul {
+  margin-left: 8px;
+}
+.product-li {
+  list-style: none;
+  margin: 2px 0px;
+}
+.product-li::before {
+  content: " ";
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  background-image: url(../../Assets/img9.jpeg);
+  background-size: contain;
+  margin-right: 5px;
+}
+.opening-hours-div {
+  padding: 7px 0px;
+  margin: 5px 0px;
+}
+.opening-hours-heading {
+  margin: 5px 0px;
+  color: var(--brownColor);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}

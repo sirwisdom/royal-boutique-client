@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../Assets/logo.png";
+import logo from "../../Assets/logo.png";
 import "./footer.css";
 
 const Footer = () => {
@@ -10,8 +10,7 @@ const Footer = () => {
           <img src={logo} alt="MFM logo" />
         </div>
         <p className="footer-logo-text">
-          Copyright &copy; 2020, Mountain of Fire and Miracles Ministiries South
-          South IV Region
+          Copyright &copy; 2020, Royal Boutique and Clothings
         </p>
       </div>
     </footer>

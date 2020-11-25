@@ -9,17 +9,18 @@
 :root {
   --whiteColor: #ffffff;
   --lightColor: #f0eeee;
-  --purpleColor: #44003e;
-  --hoverColor: #cf0358;
   --greyColor: #707070;
+  --darkGrey: #333333;
+  --lightGreyColor: #e0e4e6;
   --darkColor: #000000;
-  --lightShadow: 0px 0px 7px #c0bdbd8c;
+  --goldColor: #e8c79c;
+  --brownColor: #a76510;
+  --lightShadow: 0px 0px 6px #c0bdbdaf;
   --darkShadow: 3px 4px 5px 0px rgba(0, 0, 0, 0.5);
 }
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+
+body {
+  font-family: "Cormorant Garamond", serif;
 }
 
 .app-container {
@@ -109,6 +110,9 @@
 .pagination-active {
   background: var(--darkColor);
   color: var(--whiteColor);
+}
+.item-img {
+  object-fit: contain;
 }
 @media screen and (max-width: 768px) {
   .app-container {

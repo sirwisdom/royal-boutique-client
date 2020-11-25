@@ -1,0 +1,39 @@
+.contact-branding {
+  height: 180px;
+  overflow: hidden;
+  background: url(../../Assets/img15.jpeg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center bottom;
+}
+
+.contact-container {
+  width: 90%;
+  margin: 7px auto;
+}
+
+.contact-heading {
+  font-weight: 600;
+  color: var(--brownColor);
+}
+
+.contact-text {
+  margin: 5px 0px;
+}
+.contact-colored {
+  font-weight: 500;
+  color: var(--brownColor);
+}
+
+@media screen and (max-width: 600px) {
+  .contact-branding {
+    height: 180px;
+    overflow: hidden;
+    background: url(../../Assets/img15.jpeg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center center;
+  }
+}

@@ -1,0 +1,53 @@
+.featurecollection-single {
+  width: 99%;
+  margin: 0px auto;
+  height: 280px;
+  border: 1px solid var(--lightGreyColor);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--lightShadow);
+  margin-bottom: 2px;
+}
+.featurecollection-img-div {
+  overflow: hidden;
+  height: 76%;
+  padding: 1px 0px;
+}
+.featurecollection-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.featurecollection-text-div {
+  height: 24%;
+  margin-top: 2px;
+  padding: 4px 1px;
+  background: var(--lightGreyColor);
+}
+.feature-amount {
+  padding: 6px 2px 2px 2px;
+  color: var(--brownColor);
+}
+.add-to-cart-btn {
+  padding: 5px;
+  display: block;
+  margin: 3px auto;
+  height: 33px;
+  width: 100%;
+  font-size: 13px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  text-transform: capitalize;
+  color: var(--whiteColor);
+  background: var(--brownColor);
+  border: none;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  box-shadow: var(--lightShadow);
+  cursor: pointer;
+}
+.add-to-cart-btn:hover {
+  color: var(--whiteColor);
+  background: var(--darkColor);
+}
