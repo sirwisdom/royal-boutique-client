@@ -1,7 +1,7 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { store } from "react-notifications-component";
-import { url } from "../../config";
+import { url } from "../../Utils/config";
 
 export function loginUser(data) {
   return (dispatch) => {

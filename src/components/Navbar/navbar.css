@@ -1,7 +1,4 @@
-.navbar-container {
-  position: relative;
-  z-index: 990;
-}
+/* 
 .harmbuger-div {
   display: none;
   color: var(--brownColor);
@@ -19,7 +16,7 @@
   overflow: hidden;
   margin-left: 20px;
   margin-top: 4px;
-  /* align-self: center; */
+
 }
 
 .navbar-nav .logo-div img {
@@ -98,7 +95,7 @@
     position: fixed;
     top: 9px;
     right: 0.6rem;
-    /* color: var(--goldColor); */
+
   }
 
   .navbar-nav {
@@ -141,4 +138,4 @@
   .hideNav {
     transform: translateY(-100%);
   }
-}
+}  */

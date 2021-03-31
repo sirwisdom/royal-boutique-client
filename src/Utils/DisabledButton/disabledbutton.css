@@ -1,0 +1,10 @@
+.disabled-btn {
+  display: block;
+  border: none;
+  margin-top: 20px;
+  width: 150px;
+  padding: 8px 4px;
+  color: var(--whiteColor);
+  background: var(--greyColor);
+  box-shadow: var(--lightShadow);
+}

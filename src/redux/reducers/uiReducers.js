@@ -6,7 +6,7 @@ const initialState = {
   showNavbar: false,
 };
 
-export default function (state = initialState, action) {
+export default function uiReducer(state = initialState, action) {
   switch (action.type) {
     case "SET_SIGNUP_ERRORS":
       return {
