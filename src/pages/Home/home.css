@@ -4,4 +4,11 @@
   border: 0;
   outline: none;
   margin-bottom: 10px;
+  /* padding-bottom: 10px; */
+  /* background: "yellow"; */
+}
+.hero-header-slide-1 {
+  height: 97%;
+  /* background: "yellow"; */
+  padding-bottom: 10px;
 }

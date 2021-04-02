@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.yellow.dark,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -53,8 +53,14 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "Poppins, sans-serif",
   },
   submit: {
+    textTransform: "capitalize",
     fontFamily: "Poppins, sans-serif",
     margin: theme.spacing(3, 0, 2),
+    backgroundColor: theme.palette.yellow.dark,
+    transition: "background 0.5s ease-in",
+    "&:hover": {
+      backgroundColor: theme.palette.grey[900],
+    },
   },
   links: {
     textDecoration: "none",
@@ -82,13 +88,8 @@ export default function Login() {
     password: yup.string().required("Password is a required field"),
   });
 
-  const handleSubmit = (data) => {
-    const formData = {
-      email: data.email,
-      password: data.password,
-    };
-
-    dispatch(loginUser(formData));
+  const handleSubmit = (values) => {
+    dispatch(loginUser(values));
   };
   return user.isAuthenticated ? (
     <Redirect to="/dashboard" />
@@ -110,8 +111,8 @@ export default function Login() {
             validationSchema={loginSchema}
             validateOnChange={true}
             validateOnBlur={true}
-            onSubmit={(data) => {
-              handleSubmit(data);
+            onSubmit={(values) => {
+              handleSubmit(values);
             }}
           >
             {({ errors, touched, handleBlur, handleChange }) => (
@@ -165,7 +166,7 @@ export default function Login() {
                   </Grid>
                   <Grid item>
                     <Link to="/signup" className={classes.links}>
-                      {"Don't have an account? Sign Up"}
+                      Sign Up
                     </Link>
                   </Grid>
                 </Grid>

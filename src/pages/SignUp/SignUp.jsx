@@ -6,11 +6,13 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { Formik, Form } from "formik";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../redux/actions/userActions";
+import axios from "axios";
+import { setSnackbar } from "../../redux/actions/uiActions";
 import backgroundImage from "../../Assets/img13.jpeg";
+import { usersApiEndPoint } from "../../Utils/config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,17 +44,29 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   formTitle: {
-    fontweight: 600,
+    fontweight: 700,
     fontFamily: "Poppins, sans-serif",
   },
   textField: {
     fontweight: 500,
     fontSize: "14px",
     fontFamily: "Poppins, sans-serif",
+    borderColor: theme.palette.grey[900],
+    outlineColor: theme.palette.grey[900],
+    "&:focus": {
+      borderColor: theme.palette.grey[900],
+      outlineColor: theme.palette.grey[900],
+    },
   },
   submit: {
+    textTransform: "capitalize",
     fontFamily: "Poppins, sans-serif",
     margin: theme.spacing(3, 0, 2),
+    backgroundColor: theme.palette.yellow.dark,
+    transition: "background 0.5s ease-in",
+    "&:hover": {
+      backgroundColor: theme.palette.grey[900],
+    },
   },
   links: {
     textDecoration: "none",
@@ -67,6 +81,7 @@ const initialValues = {
 export default function SignUp() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
   const user = useSelector((state) => state.user);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -90,15 +105,30 @@ export default function SignUp() {
     password: yup.string().required("Password is a required field"),
   });
 
-  const handleSubmit = (data) => {
-    const formData = {
-      email: data.email,
-      password: data.password,
-    };
-
-    dispatch(loginUser(formData));
+  const handleSubmit = (values, helpers) => {
+    axios
+      .post(usersApiEndPoint, values)
+      .then((res) => {
+        dispatch(setSnackbar("Registration Successful", "success"));
+        helpers.setSubmitting(false);
+        setTimeout(() => {
+          history.replace("/login");
+        }, 3000);
+      })
+      .catch((err) => {
+        console.error(err);
+        helpers.setSubmitting(false);
+        if (err.response && err.response.data && err.response.data.msg) {
+          return dispatch(setSnackbar(err.response.data.msg, "error"));
+        }
+        if (err.message) {
+          dispatch(setSnackbar(err.message, "error"));
+        }
+      });
   };
-  return (
+  return user.isAuthenticated ? (
+    <Redirect to="/dashboard" />
+  ) : (
     <Grid container component="main" className={classes.root}>
       <Grid item xs={false} sm={4} md={6} className={classes.image} />
       <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square>
@@ -113,8 +143,8 @@ export default function SignUp() {
             validationSchema={signUpSchema}
             validateOnChange={true}
             validateOnBlur={true}
-            onSubmit={(data) => {
-              handleSubmit(data);
+            onSubmit={(values, helpers) => {
+              handleSubmit(values, helpers);
             }}
           >
             {({ errors, touched, handleBlur, handleChange }) => (
@@ -130,7 +160,6 @@ export default function SignUp() {
                       onBlur={handleBlur}
                       margin="normal"
                       autoComplete="off"
-                      required
                       fullWidth
                       id="firstName"
                       label="First Name"
@@ -147,7 +176,6 @@ export default function SignUp() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       margin="normal"
-                      required
                       fullWidth
                       id="lastName"
                       label="Last Name"
@@ -165,7 +193,6 @@ export default function SignUp() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       margin="normal"
-                      required
                       fullWidth
                       id="email"
                       label="Email Address"
@@ -183,7 +210,6 @@ export default function SignUp() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       margin="normal"
-                      required
                       fullWidth
                       name="password"
                       label="Password"

@@ -15,7 +15,9 @@ const useStyles = makeStyles((theme) => ({
     height: "80vh",
   },
   slideBrandingOne: {
+    height: "100%",
     overflow: "hidden",
+    // backgroundColor: "green",
   },
   sliderStyle: {
     height: "100%",
@@ -35,6 +37,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  slideBrandingGrid: {
+    // backgroundColor: "purple",
+  },
+  slideInfoGrid: {},
   slideBrandingDiv: {
     overflow: "hidden",
     height: "100%",
@@ -47,12 +53,18 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     height: "85%",
     objectFit: "contain",
+    [theme.breakpoints.down("sm")]: {
+      height: "62%",
+    },
   },
   slideBrandingImgKid: {
     width: "80%",
     overflow: "hidden",
     height: "80%",
     objectFit: "contain",
+    [theme.breakpoints.down("sm")]: {
+      height: "60%",
+    },
   },
   womenBtn: {
     margin: theme.spacing(2, 0),
@@ -79,13 +91,21 @@ const HeroHeader = () => {
     autoplay: true,
     autoplaySpeed: 5000,
     slidesToScroll: 1,
+    className: "sliderStyle",
   };
   return (
     <div className={classes.heroHeaderContainer}>
       <Slider className="sliderStyle" {...settings}>
         <div className="hero-header-slide-1">
           <Grid className={classes.slideBrandingOne} container>
-            <Grid item xs={12} sm={12} md={6} lg={6}>
+            <Grid
+              className={classes.slideBrandingGrid}
+              item
+              xs={12}
+              sm={12}
+              md={6}
+              lg={6}
+            >
               <div className={classes.slideBrandingDiv}>
                 <img
                   src={img1}
@@ -94,7 +114,14 @@ const HeroHeader = () => {
                 />
               </div>
             </Grid>
-            <Grid item xs={12} sm={12} md={6} lg={6}>
+            <Grid
+              className={classes.slideInfoGrid}
+              item
+              xs={12}
+              sm={12}
+              md={6}
+              lg={6}
+            >
               <Box p={2} className={classes.textInfo}>
                 <Typography
                   className={classes.heroHeaderTitleStyle}
@@ -131,7 +158,14 @@ const HeroHeader = () => {
             className={classes.slideBrandingOne}
             container
           >
-            <Grid item xs={12} sm={12} md={6} lg={6}>
+            <Grid
+              className={classes.slideBrandingGrid}
+              item
+              xs={12}
+              sm={12}
+              md={6}
+              lg={6}
+            >
               <div className={classes.slideBrandingDiv}>
                 <img
                   src={img2}

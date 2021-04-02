@@ -10,6 +10,7 @@ import Button from "@material-ui/core/Button";
 import ShoppingCartRoundedIcon from "@material-ui/icons/ShoppingCartRounded";
 import NumberFormat from "react-number-format";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 import { productsApiEndpoint } from "../../Utils/config";
 import Swiper, { Navigation, Pagination } from "swiper";
 import "swiper/swiper-bundle.css";
@@ -18,6 +19,8 @@ import "react-multi-carousel/lib/styles.css";
 import Preloader from "../../components/Preloader/Preloader";
 import MetaDecorator from "../../components/MetaDecorator/MetaDecorator";
 import "./singleproductpage.css";
+import { addItemToCart } from "../../redux/actions/cartActions";
+import { setSnackbar } from "../../redux/actions/uiActions";
 
 Swiper.use([Navigation, Pagination]);
 
@@ -73,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1, 3, 1, 0),
     padding: theme.spacing(0.5, 1),
     border: "1px solid gray",
+    cursor: "pointer",
   },
   productSize: {
     textTransform: "uppercase",
@@ -112,9 +116,11 @@ const SingleProductDetail = (props) => {
   const { params } = match;
   const { productId } = params;
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [productData, setProductData] = useState({});
   const [isTypesImageAvailable, setisTypesImageAvailable] = useState(false);
+  const [selectedSize, setSelectedSize] = useState("");
   const [typesIndex, setTypesIndex] = useState(0);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
@@ -168,6 +174,24 @@ const SingleProductDetail = (props) => {
       });
   }, [productId]);
 
+  const handleAddToCart = (item) => {
+    if (productData && productData.types && productData.types.length > 0) {
+      if (!selectedSize) {
+        return dispatch(
+          setSnackbar(
+            "Please select a size from the available sizes",
+            "warning"
+          )
+        );
+      }
+    }
+
+    const moreInfo = {};
+    moreInfo.isTypesImageAvailable = isTypesImageAvailable;
+    moreInfo.typesIndex = typesIndex;
+    moreInfo.selectedSize = selectedSize;
+    dispatch(addItemToCart(item, moreInfo));
+  };
   const decorator = {
     title:
       "Shop For Products | AE Wisdom Final Year Project Computer Sci. Dept FUO",
@@ -295,12 +319,14 @@ const SingleProductDetail = (props) => {
 
             <section>
               <Box mb={1}>
-                <Typography
-                  className={classes.productDescriptionStyle}
-                  variant="body1"
-                >
-                  Colors Available
-                </Typography>
+                {productData.types && productData.types.length > 0 && (
+                  <Typography
+                    className={classes.productDescriptionStyle}
+                    variant="body1"
+                  >
+                    Colors Available
+                  </Typography>
+                )}
               </Box>
               <Box className={classes.typesColorBox}>
                 {productData.types &&
@@ -342,7 +368,11 @@ const SingleProductDetail = (props) => {
                   productData.types[typesIndex].sizes &&
                   productData.types[typesIndex].sizes.length > 0 &&
                   productData.types[typesIndex].sizes.map((item) => (
-                    <div key={item._id} className={classes.productSizeSpan}>
+                    <div
+                      key={item._id}
+                      className={classes.productSizeSpan}
+                      onClick={() => setSelectedSize(item.size)}
+                    >
                       <Typography className={classes.productSize}>
                         {item.size}
                       </Typography>
@@ -360,6 +390,7 @@ const SingleProductDetail = (props) => {
                 variant="contained"
                 size="large"
                 startIcon={<ShoppingCartRoundedIcon />}
+                onClick={() => handleAddToCart(productData)}
               >
                 {" "}
                 Add to Cart

@@ -5,12 +5,12 @@
 :root {
   --whiteColor: #ffffff;
   --lightColor: #f0eeee;
-  --greyColor: #707070;
+  --greyColor: rgba(121, 120, 105, 0.829);
   --darkGrey: #333333;
   --lightGreyColor: #e0e4e6;
-  --darkColor: #000000;
+  --darkColor: rgb(190, 117, 0);
   --goldColor: #a8a8a82c;
-  --brownColor: #a76510;
+  --brownColor: rgb(167, 101, 16);
   --lightShadow: 0px 0px 6px #c0bdbdaf;
   --darkShadow: 3px 4px 5px 0px rgba(0, 0, 0, 0.5);
 }

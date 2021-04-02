@@ -1,7 +1,7 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-import { store } from "react-notifications-component";
-import { url } from "../../Utils/config";
+import { usersApiEndPoint } from "../../Utils/config";
+import { setSnackbar } from "./uiActions";
 
 export function loginUser(data) {
   return (dispatch) => {
@@ -10,38 +10,31 @@ export function loginUser(data) {
     });
 
     axios
-      .post(`${url}/admin/adminLogin`, data)
+      .post(`${usersApiEndPoint}/loginUser`, data)
       .then((res) => {
-        const token = res.data.data;
-        localStorage.setItem("JWT_TOKEN", token);
+        const token = res.data;
+        localStorage.setItem("WISDOM_BOUTIQUE_TOKEN", token);
         setAuthorizationHeader(token);
         const decodedToken = jwtDecode(token);
         dispatch(setUser(decodedToken));
 
-        window.location.href = `/`;
+        window.location.href = `/dashboard`;
         dispatch({
           type: "COMPLETE_LOGINING_USER",
         });
       })
       .catch((err) => {
         console.log(err);
-
+        if (err.response && err.response.data && err.response.data.msg) {
+          return dispatch(setSnackbar(err.response.data.msg, "error"));
+        }
+        if (err.message) {
+          dispatch(setSnackbar(err.message, "error"));
+        }
         if (err.response)
-          store.addNotification({
-            message: `${err.response.data.msg}`,
-            type: "danger",
-            insert: "top",
-            container: "top-center",
-            animationIn: ["animated", "fadeIn"],
-            animationOut: ["animated", "fadeOut"],
-            dismiss: {
-              duration: 4000,
-              onScreen: true,
-            },
+          dispatch({
+            type: "COMPLETE_LOGINING_USER",
           });
-        dispatch({
-          type: "COMPLETE_LOGINING_USER",
-        });
       });
   };
 }
@@ -60,24 +53,12 @@ export function signUpUser(data) {
   return (dispatch) => {
     dispatch({ type: "SIGNING_USER" });
     axios
-      .post(`${url}/admin/adminRegister`, data)
+      .post(`${usersApiEndPoint}/admin/adminRegister`, data)
       .then((res) => {
         dispatch({ type: "REGISTER_USER" });
         console.log("response", res);
 
         if (res.status === 200) {
-          store.addNotification({
-            message: `Your account have been created successfully`,
-            type: "success",
-            insert: "top",
-            container: "top-center",
-            animationIn: ["animated", "fadeIn"],
-            animationOut: ["animated", "fadeOut"],
-            dismiss: {
-              duration: 4000,
-              onScreen: true,
-            },
-          });
           dispatch({ type: "COMPLETE_SIGNING_USER" });
           setTimeout(() => {
             window.location.href = "/login";
@@ -89,18 +70,6 @@ export function signUpUser(data) {
         dispatch({ type: "COMPLETE_SIGNING_USER" });
         dispatch(setSignUpErrors(err.message));
         if (err.response && err.response.data && err.response.data.msg) {
-          return store.addNotification({
-            message: `${err.response.data.msg}`,
-            type: "danger",
-            insert: "top",
-            container: "top-center",
-            animationIn: ["animated", "fadeIn"],
-            animationOut: ["animated", "fadeOut"],
-            dismiss: {
-              duration: 6000,
-              onScreen: true,
-            },
-          });
         }
       });
   };
@@ -126,7 +95,7 @@ export function clearSignUpErrors() {
 
 export function logOutUser() {
   return (dispatch) => {
-    localStorage.removeItem("JWT_TOKEN");
+    localStorage.removeItem("WISDOM_BOUTIQUE_TOKEN");
     delete axios.defaults.headers.common["Authorization"];
     dispatch({ type: "LOGOUT_USER" });
     window.location.href = "/login";

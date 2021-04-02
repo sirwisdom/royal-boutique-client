@@ -3,14 +3,12 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import store from "./redux/store";
-import ReactNotification from "react-notifications-component";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
-      <ReactNotification />
       <App />
     </React.StrictMode>
   </Provider>,

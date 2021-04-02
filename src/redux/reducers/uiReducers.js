@@ -1,78 +1,41 @@
+import {
+  SET_SNACKBAR,
+  HIDE_SNACKBAR,
+  TOGGLE_DARK_MODE,
+} from "../types/uiTypes";
+
 const initialState = {
-  loading: false,
-  errors: null,
-  signUpErrors: null,
-  updateErrors: null,
-  showNavbar: false,
+  snackBarOpen: false,
+  darkMode: false,
+  snackBarMessage: "",
+  snackBarType: "",
 };
 
-export default function uiReducer(state = initialState, action) {
+const uiReducer = function (state = initialState, action) {
   switch (action.type) {
-    case "SET_SIGNUP_ERRORS":
+    case SET_SNACKBAR:
+      const { snackBarMessage, snackBarType } = action.payload;
       return {
         ...state,
-        loading: false,
-        signUpErrors: action.payload,
-      };
-    case "CLEAR_SIGNUP_ERRORS":
-      return {
-        ...state,
-        loading: false,
-        signUpErrors: null,
-      };
-    case "SET_UPDATE_ERRORS":
-      return {
-        ...state,
-        loading: false,
-        updateErrors: action.payload,
-      };
-    case "CLEAR_UPDATE_ERRORS":
-      return {
-        ...state,
-        loading: false,
-        updateErrors: null,
-      };
-    case "SET_MESSAGE":
-      return {
-        ...state,
-        loading: false,
-        message: action.payload,
-      };
-    case "CLEAR_MESSAGE":
-      return {
-        ...state,
-        loading: false,
-        message: null,
-      };
-    case "CLEAR_ERRORS":
-      return {
-        ...state,
-        loading: false,
-        errors: null,
-      };
-    case "LOADING_UI":
-      return {
-        ...state,
-        loading: true,
-      };
-    case "STOP_LOADING_UI":
-      return {
-        ...state,
-        loading: false,
-      };
-    case "TOGGLE_NAVBAR":
-      return {
-        ...state,
-        showNavbar: !state.showNavbar,
+        snackBarOpen: true,
+        snackBarMessage: snackBarMessage,
+        snackBarType: snackBarType,
       };
 
-    case "HIDE_NAVBAR":
+    case HIDE_SNACKBAR:
       return {
         ...state,
-        showNavbar: false,
+        snackBarOpen: false,
+      };
+    case TOGGLE_DARK_MODE:
+      return {
+        ...state,
+        darkMode: !state.darkMode,
       };
 
     default:
       return state;
   }
-}
+};
+
+export default uiReducer;

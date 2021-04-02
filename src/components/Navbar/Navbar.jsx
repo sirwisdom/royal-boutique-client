@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import logo from "../../Assets/logo.jpg";
+import logo from "../../Assets/mylogo.png";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -13,8 +13,11 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import ShoppingCartRoundedIcon from "@material-ui/icons/ShoppingCartRounded";
+import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import routes from "../../Utils/routesLink";
 import SideDrawer from "./SideDrawer";
+import { logOutUser } from "../../redux/actions/userActions";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -118,30 +121,27 @@ const useStyles = makeStyles((theme) => ({
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.user);
+  const cartItems = useSelector((state) => state.cartReducer.cartItems);
 
+  let totalCartItems = cartItems.reduce((total, item) => item.qty + total, 0);
   const handleOpenDrawer = () => {
-    console.log("object");
     setOpenDrawer(true);
   };
   const handleCloseDrawer = () => {
     setOpenDrawer(false);
   };
   const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
   };
 
   const menuId = "primary-search-account-menu";
@@ -155,42 +155,15 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = "primary-search-account-menu-mobile";
-
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label="show cart items" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            ShoppingCartRoundedIcon
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
+      <MenuItem
+        onClick={() => {
+          history.push("/dashboard");
+          handleMenuClose();
+        }}
+      >
+        Profile
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+      <MenuItem onClick={() => dispatch(logOutUser())}>My account</MenuItem>
     </Menu>
   );
 
@@ -238,20 +211,31 @@ export default function PrimarySearchAppBar() {
                 </NavLink>
               ))}
             </div>
-            <IconButton aria-label="show cart items" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <ShoppingCartRoundedIcon />
-              </Badge>
-            </IconButton>
+
+            {userData.isAuthenticated ? (
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            ) : (
+              <NavLink to="/login" className={classes.navLinkStyle}>
+                Login
+              </NavLink>
+            )}
             <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              onClick={() => history.push("/cart")}
+              aria-label="show cart items"
               color="inherit"
             >
-              <AccountCircle />
+              <Badge badgeContent={totalCartItems} color="secondary">
+                <ShoppingCartRoundedIcon />
+              </Badge>
             </IconButton>
           </div>
           {/* <div className={classes.sectionMobile}>

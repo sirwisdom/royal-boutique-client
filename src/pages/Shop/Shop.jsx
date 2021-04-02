@@ -219,6 +219,7 @@ function Shop() {
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
+    setSelectedSubCategory("");
   };
 
   const handleSubCategoryChange = (e) => {
@@ -228,7 +229,7 @@ function Shop() {
   const handleBrandChange = (e) => {
     setSelectedBrand(e.target.value);
     window.scroll({
-      top: -350,
+      top: -window.innerHeight,
       left: 0,
       behavior: "smooth",
     });
@@ -241,7 +242,7 @@ function Shop() {
   const handleSizeChange = (e) => {
     setSelectedSize(e.target.value);
     window.scrollBy({
-      top: -350,
+      top: -window.innerHeight,
       left: 0,
       behavior: "smooth",
     });
@@ -418,7 +419,7 @@ function Shop() {
                       filteredProducts.length > 0 &&
                       filteredProducts.map((item, index) => {
                         return (
-                          <Grid item xs={12} sm={4} md={4} lg={4}>
+                          <Grid key={index} item xs={12} sm={4} md={4} lg={4}>
                             <Card className={classes.cardRoot}>
                               {item.discount > 0 && (
                                 <div className={classes.discountDiv}>

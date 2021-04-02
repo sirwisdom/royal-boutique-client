@@ -11,6 +11,8 @@ import Cart from "./pages/Cart/Cart";
 import Contact from "./pages/Contact/Contact";
 import SignUp from "./pages/SignUp/SignUp";
 import SingleProductDetail from "./pages/SingleProductPage/SingleProductPage";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import MakeOrder from "./pages/MakeOrder/MakeOrder";
 
 function Routes() {
   return (
@@ -23,9 +25,11 @@ function Routes() {
             component={SingleProductDetail}
             exact
           />
-          <Route path="/contact" component={Contact} exact />{" "}
-          <Route path="/cart" component={Cart} exact />{" "}
-          <Route path="/shop" component={Shop} exact />{" "}
+          <Route path="/dashboard/make-order" component={MakeOrder} exact />
+          <Route path="/dashboard" component={Dashboard} exact />
+          <Route path="/contact" component={Contact} exact />
+          <Route path="/cart" component={Cart} exact />
+          <Route path="/shop" component={Shop} exact />
           <Route path="/about" component={About} exact />
           <Route path="/login" component={Login} exact />
           <Route path="/signup" component={SignUp} exact />
