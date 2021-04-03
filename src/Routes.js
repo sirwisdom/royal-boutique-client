@@ -13,6 +13,10 @@ import SignUp from "./pages/SignUp/SignUp";
 import SingleProductDetail from "./pages/SingleProductPage/SingleProductPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import MakeOrder from "./pages/MakeOrder/MakeOrder";
+import MyProfile from "./pages/MyProfile/MyProfile";
+import EditAccount from "./pages/EditAccount/EditAccount";
+import OrderDetailsPage from "./pages/OrderDetailsPage/OrderDetailsPage";
+import Orders from "./pages/AllOrders/AllOrders";
 
 function Routes() {
   return (
@@ -25,6 +29,15 @@ function Routes() {
             component={SingleProductDetail}
             exact
           />
+
+          <Route path="/dashboard/my-orders" component={Orders} exact />
+          <Route
+            path="/dasboard/my-orders/order-detail/:orderId"
+            component={OrderDetailsPage}
+            exact
+          />
+          <Route path="/dashboard/edit-account" component={EditAccount} exact />
+          <Route path="/dashboard/my-account" component={MyProfile} exact />
           <Route path="/dashboard/make-order" component={MakeOrder} exact />
           <Route path="/dashboard" component={Dashboard} exact />
           <Route path="/contact" component={Contact} exact />

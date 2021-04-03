@@ -1,98 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import TableContainer from "@material-ui/core/TableContainer";
-import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
-import TableBody from "@material-ui/core/TableBody";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
-import MoreHorizRoundedIcon from "@material-ui/icons/MoreHorizRounded";
-import NumberFormat from "react-number-format";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import Paper from "@material-ui/core/Paper";
 import { useHistory } from "react-router-dom";
 import { ordersApiEndpoint } from "../../Utils/config";
+import Preloader from "../../components/Preloader/Preloader";
+import NumberFormat from "react-number-format";
+import { useSelector } from "react-redux";
 import dayjs from "dayjs";
-
-import relativeTime from "dayjs/plugin/relativeTime";
-dayjs.extend(relativeTime);
-// import { Link } from "react-router-dom";
-
-const useStyles = makeStyles((theme) => ({
-  recentOrdersRoot: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    width: "100%",
-  },
-  capitalize: {
-    textTransform: "capitalize",
-  },
-  paper: {
-    width: "100%",
-    marginBottom: theme.spacing(2),
-  },
-  title: {
-    fontWeight: 400,
-    flex: "1 1 100%",
-    textAlign: "center",
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-  },
-  table: {
-    minWidth: 750,
-  },
-  tableHead: {
-    fontWeight: "bold",
-  },
-  recentOrderTitle: {
-    fontFamily: "Poppins, sans-serif",
-    fontWeight: 500,
-    textTransform: "capitalize",
-  },
-  categoryStyle: {
-    textTransform: "capitalize",
-  },
-  categoryImage: {
-    objectFit: "contain",
-    width: "50px",
-    height: "50px",
-  },
-  uppercase: {
-    textTransform: "uppercase",
-  },
-  successText: {
-    color: theme.palette.success.main,
-  },
-  errorText: {
-    color: theme.palette.error.main,
-  },
-  button: {
-    float: "right",
-    textTransform: "capitalize",
-    width: "350px",
-    color: theme.palette.grey[50],
-    background: theme.palette.grey[900],
-    borderRadius: "23px",
-    transition: "all 0.5s ease-in",
-    "&:hover": {
-      background: theme.palette.yellow.dark,
-    },
-    [theme.breakpoints.down("xs")]: {
-      width: "280px",
-    },
-  },
-  noOrderBoxPaper: {
-    marginTop: theme.spacing(2),
-  },
-  noOrderBox: {
-    padding: theme.spacing(6, 2),
-  },
-}));
+// import MetaDecorator from "../../components/MetaDecorator/MetaDecorator";
+// import { authForExcos } from "../../utils/excosAuth";
 
 const headCells = [
   { id: "SN", label: "SN" },
@@ -127,18 +56,11 @@ const headCells = [
 ];
 
 function EnhancedTableHead() {
-  const classes = useStyles();
-
   return (
     <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
-          <TableCell
-            className={classes.tableHead}
-            key={headCell.id}
-            align="left"
-            padding="default"
-          >
+          <TableCell key={headCell.id} align="left" padding="default">
             {headCell.label}
           </TableCell>
         ))}
@@ -147,52 +69,114 @@ function EnhancedTableHead() {
   );
 }
 
-function RecentOrders() {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginTop: theme.spacing(10),
+    width: "100%",
+  },
+  capitalize: {
+    textTransform: "capitalize",
+  },
+  paper: {
+    width: "100%",
+    marginBottom: theme.spacing(2),
+  },
+  title: {
+    fontWeight: 400,
+    flex: "1 1 100%",
+    textAlign: "center",
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+  table: {
+    minWidth: 750,
+  },
+  categoryStyle: {
+    textTransform: "capitalize",
+  },
+  successText: {
+    color: theme.palette.success.main,
+  },
+  errorText: {
+    color: theme.palette.secondary.main,
+  },
+}));
+
+function Orders() {
   const classes = useStyles();
   const userData = useSelector((state) => state.user.data);
-  const history = useHistory();
-  const [userOrder, setUserOrder] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [data, setData] = useState({});
+  const [allOrders, setAllOrders] = useState([]);
+  const [pageNumber, setPageNumber] = useState(0);
+  const history = useHistory();
 
-  useEffect(() => {
+  const limit = 50;
+
+  const getOrders = useCallback(() => {
     axios
-      .get(`${ordersApiEndpoint}/user-recent/${userData._id}`)
+      .get(
+        `${ordersApiEndpoint}/user/${userData._id}/?pageNumber=${pageNumber}&limit=${limit}`
+      )
       .then((res) => {
-        setUserOrder(res.data);
+        setData(res.data);
+        setAllOrders(res.data.data);
         setLoading(false);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [userData._id]);
+  }, [pageNumber, userData._id]);
 
-  return loading ? null : (
-    <div className={classes.recentOrdersRoot}>
-      <Container maxWidth="lg">
-        {userOrder && userOrder.length > 0 ? (
-          <div>
-            <TableContainer>
-              <Box mb={1} mt={1}>
-                <Typography
-                  className={classes.recentOrderTitle}
-                  gutterBottom
-                  variant="h6"
-                >
-                  Recent Orders
-                </Typography>
-              </Box>
-              <Table
-                className={classes.table}
-                aria-labelledby="tableTitle"
-                aria-label="enhanced table"
-                size="small"
-              >
-                <EnhancedTableHead classes={classes} />
-                <TableBody>
-                  {userOrder &&
-                    userOrder.length > 0 &&
-                    userOrder.map((row, index) => (
-                      <TableRow key={row._id} hover tabIndex={-1}>
+  useEffect(() => {
+    getOrders();
+  }, [pageNumber, getOrders, userData._id]);
+
+  const handleChangePage = (event, newPage) => {
+    setPageNumber(newPage);
+    // setLoading(true);
+    getOrders();
+  };
+
+  //   let decorator = {
+  //     title: "MFMCF NDU Alumni Members",
+  //     description: "MFMCF NDU Alumni members",
+  //     keywords: " ",
+  //   };
+
+  return loading ? (
+    <Preloader />
+  ) : allOrders.length < 1 ? (
+    <div className={classes.root}>
+      {/* <MetaDecorator decorator={decorator} /> */}
+      <Container>
+        <Box m={6}>
+          <Typography variant="h4">
+            Sorry there are currently no orders made...
+          </Typography>
+        </Box>
+      </Container>
+    </div>
+  ) : (
+    <div className={classes.root}>
+      <Container>
+        <Paper className={classes.paper}>
+          <Typography className={classes.title} variant="h6" id="tableTitle">
+            My Orders
+          </Typography>
+          <TableContainer>
+            <Table
+              className={classes.table}
+              aria-labelledby="tableTitle"
+              aria-label="enhanced table"
+              size="medium"
+            >
+              <EnhancedTableHead classes={classes} />
+              <TableBody>
+                {allOrders.length > 0 &&
+                  allOrders.map((row, index) => {
+                    return (
+                      <TableRow hover tabIndex={-1}>
                         <TableCell className={classes.capitalize} align="left">
                           {index + 1}
                         </TableCell>
@@ -256,28 +240,27 @@ function RecentOrders() {
                               )
                             }
                           >
-                            <MoreHorizRoundedIcon />
+                            <MoreHorizIcon />
                           </IconButton>
                         </TableCell>
                       </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
-        ) : (
-          <Paper className={classes.noOrderBoxPaper}>
-            <Box className={classes.noOrderBox}>
-              <Typography variant="body2">
-                Hi, you have not made any orders yet... visit our shop to try
-                out our exclusive collections
-              </Typography>{" "}
-            </Box>
-          </Paper>
-        )}
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[]}
+            component="div"
+            count={data.totalCount}
+            rowsPerPage={data.rowsPerPage}
+            page={pageNumber}
+            onChangePage={handleChangePage}
+          />
+        </Paper>
       </Container>
     </div>
   );
 }
 
-export default RecentOrders;
+export default Orders;

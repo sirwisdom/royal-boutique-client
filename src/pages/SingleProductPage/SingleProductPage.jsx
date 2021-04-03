@@ -78,6 +78,14 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid gray",
     cursor: "pointer",
   },
+  productSpanSelected: {
+    display: "inline-block",
+    margin: theme.spacing(1, 3, 1, 0),
+    padding: theme.spacing(0.5, 1),
+    border: `1px solid ${theme.palette.yellow.main}`,
+    cursor: "pointer",
+    boxShadow: "0px 0px 4px #c0bdbdde",
+  },
   productSize: {
     textTransform: "uppercase",
     fontFamily: "Poppins, sans-serif",
@@ -361,8 +369,17 @@ const SingleProductDetail = (props) => {
                     </div>
                   ))}
               </Box>
-
-              <Box mt={1} mb={1} className={classes.typesSizeBox}>
+              <Box mt={2}>
+                {productData.types && productData.types.length > 0 && (
+                  <Typography
+                    className={classes.productDescriptionStyle}
+                    variant="body1"
+                  >
+                    Sizes Available
+                  </Typography>
+                )}
+              </Box>
+              <Box mb={1} className={classes.typesSizeBox}>
                 {productData.types &&
                   productData.types.length > 0 &&
                   productData.types[typesIndex].sizes &&
@@ -370,7 +387,11 @@ const SingleProductDetail = (props) => {
                   productData.types[typesIndex].sizes.map((item) => (
                     <div
                       key={item._id}
-                      className={classes.productSizeSpan}
+                      className={
+                        selectedSize === item.size
+                          ? classes.productSpanSelected
+                          : classes.productSizeSpan
+                      }
                       onClick={() => setSelectedSize(item.size)}
                     >
                       <Typography className={classes.productSize}>

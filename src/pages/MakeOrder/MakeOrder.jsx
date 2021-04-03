@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
@@ -14,12 +13,27 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Paper from "@material-ui/core/Paper";
-import { useDispatch } from "react-redux";
+import TableContainer from "@material-ui/core/TableContainer";
+import Table from "@material-ui/core/Table";
+import TableHead from "@material-ui/core/TableHead";
+import TableBody from "@material-ui/core/TableBody";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import NumberFormat from "react-number-format";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  removeItemFromCart,
+  incrementCartItem,
+  decrementCartItem,
+} from "../../redux/actions/cartActions";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
 import { setSnackbar } from "../../redux/actions/uiActions";
-import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import { ordersApiEndpoint } from "../../Utils/config";
 import paystackImage from "../../Assets/paystack.png";
 import nigeriaStates from "../../Utils/NigeriaStates";
@@ -86,7 +100,30 @@ const useStyles = makeStyles((theme) => ({
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-
+  title: {
+    fontWeight: 400,
+    flex: "1 1 100%",
+    textAlign: "center",
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+  table: {
+    minWidth: 750,
+  },
+  tableHead: {
+    fontWeight: "bold",
+  },
+  categoryStyle: {
+    textTransform: "capitalize",
+  },
+  categoryImage: {
+    objectFit: "contain",
+    width: "40px",
+    height: "40px",
+  },
+  uppercase: {
+    textTransform: "uppercase",
+  },
   paystackImage: {
     width: "400px",
     [theme.breakpoints.down("sm")]: {
@@ -112,6 +149,53 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const headCells = [
+  { id: "Image", label: "" },
+
+  {
+    id: "Product ",
+    label: "Product ",
+  },
+  {
+    id: "Price",
+    label: "Price",
+  },
+  { id: "Size", label: "Size" },
+
+  {
+    id: "Quantity",
+    label: "Quantity",
+  },
+
+  {
+    id: "Amount",
+    label: "Amount",
+  },
+  {
+    id: "Actions ",
+    label: " ",
+  },
+];
+
+function EnhancedTableHead() {
+  const classes = useStyles();
+  return (
+    <TableHead>
+      <TableRow>
+        {headCells.map((headCell) => (
+          <TableCell
+            className={classes.tableHead}
+            key={headCell.id}
+            align="left"
+            padding="default"
+          >
+            {headCell.label}
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+}
 function MakeOrder() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -213,7 +297,9 @@ function MakeOrder() {
     }
   };
 
-  return (
+  return !cartItems || cartItems.length < 1 ? (
+    <Redirect to="/shop" />
+  ) : (
     <div className={classes.root}>
       <MetaDecorator decorator={decorator} />
       <Container
@@ -249,7 +335,7 @@ function MakeOrder() {
                 <Paper className={classes.formPaperStyle}>
                   <Box mt={2} mb={2}>
                     <Typography
-                      variant="body1"
+                      variant="h6"
                       align="left"
                       className={classes.formTitle}
                     >
@@ -371,7 +457,169 @@ function MakeOrder() {
                 </Paper>
 
                 {/* End of Shipping Details Section */}
+                {cartItems && cartItems.length > 0 ? (
+                  <Paper elevation={2} className={classes.formPaperStyle}>
+                    <div>
+                      <TableContainer>
+                        <Typography
+                          className={classes.formTitle}
+                          gutterBottom
+                          align="left"
+                          variant="h6"
+                        >
+                          Order Summary
+                        </Typography>
+                        <Table
+                          className={classes.table}
+                          aria-labelledby="tableTitle"
+                          aria-label="enhanced table"
+                          size="small"
+                        >
+                          <EnhancedTableHead classes={classes} />
+                          <TableBody>
+                            {cartItems &&
+                              cartItems.length > 0 &&
+                              cartItems.map((item, index) => {
+                                const { moreInfo, product } = item;
+                                return (
+                                  <TableRow key={index} hover tabIndex={-1}>
+                                    <TableCell align="left">
+                                      {moreInfo &&
+                                      moreInfo.isTypesImageAvailable ? (
+                                        <img
+                                          className={classes.categoryImage}
+                                          src={
+                                            product?.types[moreInfo.typesIndex]
+                                              ?.images[0]
+                                          }
+                                          alt="product"
+                                        />
+                                      ) : (
+                                        <img
+                                          className={classes.categoryImage}
+                                          src={item?.product?.images[0]}
+                                          alt="product"
+                                        />
+                                      )}
+                                    </TableCell>
+                                    <TableCell
+                                      className={classes.capitalize}
+                                      align="left"
+                                    >
+                                      {item?.product?.productName}{" "}
+                                    </TableCell>
+                                    <TableCell
+                                      align="left"
+                                      className={classes.capitalize}
+                                    >
+                                      <NumberFormat
+                                        value={item?.product?.price}
+                                        displayType={"text"}
+                                        thousandSeparator={true}
+                                        renderText={(value) => (
+                                          <Typography
+                                            variant="body2"
+                                            component="p"
+                                            align="left"
+                                          >
+                                            {" "}
+                                            &#8358;{value}
+                                          </Typography>
+                                        )}
+                                      />{" "}
+                                    </TableCell>
+                                    <TableCell className={classes.uppercase}>
+                                      {moreInfo && moreInfo.selectedSize
+                                        ? `${moreInfo?.selectedSize}`
+                                        : `${item?.product?.size}`}
+                                    </TableCell>
+                                    <TableCell>
+                                      {item?.qty} &nbsp;
+                                      <ButtonGroup size="small" color="primary">
+                                        <Button
+                                          onClick={() =>
+                                            dispatch(
+                                              decrementCartItem(
+                                                item.product._id
+                                              )
+                                            )
+                                          }
+                                        >
+                                          -
+                                        </Button>
+                                        <Button
+                                          onClick={() =>
+                                            dispatch(
+                                              incrementCartItem(
+                                                item.product._id
+                                              )
+                                            )
+                                          }
+                                        >
+                                          +
+                                        </Button>
+                                      </ButtonGroup>
+                                    </TableCell>
 
+                                    <TableCell
+                                      align="left"
+                                      className={classes.capitalize}
+                                    >
+                                      <NumberFormat
+                                        value={item?.product?.price * item.qty}
+                                        displayType={"text"}
+                                        thousandSeparator={true}
+                                        renderText={(value) => (
+                                          <Typography
+                                            variant="body2"
+                                            component="p"
+                                            align="left"
+                                          >
+                                            {" "}
+                                            &#8358;{value}
+                                          </Typography>
+                                        )}
+                                      />{" "}
+                                    </TableCell>
+                                    <TableCell
+                                      align="left"
+                                      className={classes.capitalize}
+                                    >
+                                      <IconButton
+                                        size="small"
+                                        onClick={() =>
+                                          dispatch(
+                                            removeItemFromCart(
+                                              item?.product?._id
+                                            )
+                                          )
+                                        }
+                                        color="secondary"
+                                      >
+                                        <DeleteForeverIcon />
+                                      </IconButton>
+                                    </TableCell>
+                                  </TableRow>
+                                );
+                              })}
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                      <Box mt={3} mb={2} pr={4}>
+                        <Typography align="right" variant="body1">
+                          {" "}
+                          Subtotal: NGN{" "}
+                          <NumberFormat
+                            value={totalPrice}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                          />
+                        </Typography>
+                        <br />
+                      </Box>
+                    </div>
+                  </Paper>
+                ) : null}
                 <div>
                   <Button
                     type="submit"

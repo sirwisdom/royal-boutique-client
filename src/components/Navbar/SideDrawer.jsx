@@ -91,7 +91,7 @@ export default function SideDrawer(props) {
                   <>
                     <ListItem
                       button
-                      onClick={() => handleRouteChange("account")}
+                      onClick={() => handleRouteChange("dashboard")}
                     >
                       <ListItemIcon>
                         <PermIdentityIcon />

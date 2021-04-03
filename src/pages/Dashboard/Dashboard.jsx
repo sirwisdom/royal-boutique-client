@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
@@ -14,8 +14,11 @@ import FaceRoundedIcon from "@material-ui/icons/FaceRounded";
 import NotificationsActiveRoundedIcon from "@material-ui/icons/NotificationsActiveRounded";
 import VisibilityRoundedIcon from "@material-ui/icons/VisibilityRounded";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { useHistory } from "react-router-dom";
 import RecentOrders from "./RecentOrders";
-// import NumberFormat from "react-number-format";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { usersApiEndPoint } from "../../Utils/config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -102,12 +105,14 @@ const useStyles = makeStyles((theme) => ({
 
 export function CustomizedCards(props) {
   const classes = useStyles(props);
+  const history = useHistory();
 
   const {
     cardHeaderTitleValue,
     mainCardTextValue,
     secondaryTextValue,
     cardIconValue,
+    routePath,
   } = props;
 
   return (
@@ -117,7 +122,11 @@ export function CustomizedCards(props) {
         <Typography className={classes.cardHeaderTitle} variant="h6">
           {cardHeaderTitleValue}
         </Typography>{" "}
-        <IconButton size="small" className={classes.cardIconButton}>
+        <IconButton
+          onClick={() => history.push(routePath)}
+          size="small"
+          className={classes.cardIconButton}
+        >
           <MoreVertIcon />{" "}
         </IconButton>
       </Box>
@@ -152,6 +161,7 @@ export function CustomizedCards(props) {
           className={classes.knowMoreBtn}
           startIcon={<VisibilityRoundedIcon />}
           size="small"
+          onClick={() => history.push(routePath)}
         >
           Know More
         </Button>
@@ -161,14 +171,23 @@ export function CustomizedCards(props) {
 }
 
 function Dashboard() {
-  // const [selected, setSelected] = useState({});
   const classes = useStyles();
-  // const [isSubmiting, setIsSubmiting] = useState(false);
+  const [dashboardCounts, setDashboardCounts] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  let totalPrice = 0;
+  const userData = useSelector((state) => state.user.data);
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [totalPrice]);
+    axios
+      .get(`${usersApiEndPoint}/dashboard/${userData._id}`)
+      .then((res) => {
+        setDashboardCounts(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  }, [userData._id]);
 
   return (
     <div className={classes.root}>
@@ -177,8 +196,9 @@ function Dashboard() {
           <Grid item xs={12} sm={6} md={4}>
             {" "}
             <CustomizedCards
+              routePath="/dashboard/my-orders"
               cardHeaderTitleValue="Orders"
-              mainCardTextValue={15}
+              mainCardTextValue={!loading && dashboardCounts?.orderCount}
               secondaryTextValue="Total Number of times you made orders"
               colorValue="#089b14"
               cardIconValue={
@@ -189,6 +209,7 @@ function Dashboard() {
           <Grid item xs={12} sm={6} md={4}>
             {" "}
             <CustomizedCards
+              routePath="/dashboard/my-account"
               cardHeaderTitleValue="Account"
               mainCardTextValue=""
               secondaryTextValue="Manage your account"
@@ -202,6 +223,7 @@ function Dashboard() {
           <Grid item xs={12} sm={6} md={4}>
             {" "}
             <CustomizedCards
+              routePath="/dashboard/my-messages"
               cardHeaderTitleValue="Notifications"
               mainCardTextValue={6}
               secondaryTextValue="Your Messages and Notifications"

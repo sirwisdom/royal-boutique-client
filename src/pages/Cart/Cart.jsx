@@ -173,7 +173,7 @@ function Cart() {
                     cartItems.map((item, index) => {
                       const { moreInfo, product } = item;
                       return (
-                        <TableRow hover tabIndex={-1}>
+                        <TableRow key={index} hover tabIndex={-1}>
                           <TableCell align="left">
                             {moreInfo && moreInfo.isTypesImageAvailable ? (
                               <img

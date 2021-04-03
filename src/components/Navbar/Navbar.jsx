@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "../../Assets/mylogo.png";
 import { fade, makeStyles } from "@material-ui/core/styles";
@@ -13,10 +13,12 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import ShoppingCartRoundedIcon from "@material-ui/icons/ShoppingCartRounded";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import routes from "../../Utils/routesLink";
 import SideDrawer from "./SideDrawer";
+import axios from "axios";
+import { usersApiEndPoint } from "../../Utils/config";
 import { logOutUser } from "../../redux/actions/userActions";
 
 const useStyles = makeStyles((theme) => ({
@@ -43,6 +45,21 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1, 2),
     transition: " all 1s linear",
     "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+  },
+  activeLinkStyle: {
+    color: theme.palette.yellow.main,
+    display: "inline-block",
+    textDecoration: "none",
+    textTransform: "capitalize",
+    fontSize: "12px",
+    alignItems: "center",
+    margin: theme.spacing(0, 1),
+    padding: theme.spacing(1, 2),
+    transition: " all 1s linear",
+    "&:hover": {
+      color: theme.palette.grey[400],
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
   },
@@ -102,6 +119,13 @@ const useStyles = makeStyles((theme) => ({
       width: "20ch",
     },
   },
+  userImageStyle: {
+    width: "26px",
+    height: "26px",
+    borderRadius: "50%",
+    objectFit: "cover",
+    boxShadow: "0px 0px 4px #c0bdbdde",
+  },
   sectionDesktop: {
     display: "none",
     [theme.breakpoints.up("md")]: {
@@ -122,12 +146,25 @@ export default function PrimarySearchAppBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [myData, setMyData] = useState({});
+  const [loading, setLoading] = useState(true);
   const history = useHistory();
+  const location = useLocation();
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user);
   const cartItems = useSelector((state) => state.cartReducer.cartItems);
 
   let totalCartItems = cartItems.reduce((total, item) => item.qty + total, 0);
+
+  useEffect(() => {
+    axios
+      .get(`${usersApiEndPoint}/${userData.data._id}`)
+      .then((res) => {
+        setMyData(res.data);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+  }, [userData.data._id]);
   const handleOpenDrawer = () => {
     setOpenDrawer(true);
   };
@@ -163,7 +200,7 @@ export default function PrimarySearchAppBar() {
       >
         Profile
       </MenuItem>
-      <MenuItem onClick={() => dispatch(logOutUser())}>My account</MenuItem>
+      <MenuItem onClick={() => dispatch(logOutUser())}>Logout</MenuItem>
     </Menu>
   );
 
@@ -204,7 +241,11 @@ export default function PrimarySearchAppBar() {
                 <NavLink
                   key={index}
                   to={route.path}
-                  className={classes.navLinkStyle}
+                  className={
+                    location.pathname === route.path
+                      ? classes.activeLinkStyle
+                      : classes.navLinkStyle
+                  }
                 >
                   {" "}
                   {route.label}{" "}
@@ -221,10 +262,25 @@ export default function PrimarySearchAppBar() {
                 onClick={handleProfileMenuOpen}
                 color="inherit"
               >
-                <AccountCircle />
+                {!loading && myData?.image ? (
+                  <img
+                    src={myData.image}
+                    alt="user"
+                    className={classes.userImageStyle}
+                  />
+                ) : (
+                  <AccountCircle />
+                )}
               </IconButton>
             ) : (
-              <NavLink to="/login" className={classes.navLinkStyle}>
+              <NavLink
+                to="/login"
+                className={
+                  location.pathname === "/login"
+                    ? classes.activeLinkStyle
+                    : classes.navLinkStyle
+                }
+              >
                 Login
               </NavLink>
             )}

@@ -10,6 +10,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import NumberFormat from "react-number-format";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { productsApiEndpoint } from "../../Utils/config";
 import ProductSkeleton from "../../components/ProductSkeleton/ProductSkeleton";
@@ -44,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 0,
     paddingTop: "56.25%", // 16:9
+    cursor: "pointer",
   },
   productTitle: {
     fontWeight: 700,
@@ -61,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
 
 const FeaturedProducts = () => {
   const classes = useStyles();
+  const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [featuredProducts, setFeaturedProducts] = useState([]);
 
@@ -140,17 +143,21 @@ const FeaturedProducts = () => {
           {featuredProducts.length > 0 &&
             featuredProducts.map((item, index) => {
               return (
-                <Card className={classes.cardRoot}>
+                <Card className={classes.cardRoot} key={item._id}>
                   <CardMedia
                     className={classes.media}
                     image={`${item.images[0]}`}
                     title="Shop Product"
+                    onClick={() =>
+                      history.push(`/shop/${item.productName}/${item._id}`)
+                    }
                   />
                   <CardContent>
                     <Box mt={1} mb={1} className={classes.productTypesBox}>
                       {item.types && item.types.length > 0 ? (
-                        item.types.map((type) => (
+                        item.types.map((type, idx) => (
                           <div
+                            key={idx}
                             style={{
                               width: "13px",
                               height: "13px",

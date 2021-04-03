@@ -10,6 +10,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import NumberFormat from "react-number-format";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { productsApiEndpoint } from "../../Utils/config";
 import ProductSkeleton from "../../components/ProductSkeleton/ProductSkeleton";
@@ -59,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 0,
     paddingTop: "56.25%", // 16:9
+    cursor: "pointer",
   },
   productTitle: {
     fontWeight: 700,
@@ -83,6 +85,7 @@ const useStyles = makeStyles((theme) => ({
 const DiscountProduct = () => {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
+  const history = useHistory();
   const [discountProducts, setDiscountProducts] = useState([]);
 
   const theme = useTheme();
@@ -162,7 +165,7 @@ const DiscountProduct = () => {
           {discountProducts.length > 0 &&
             discountProducts.map((item, index) => {
               return (
-                <Card className={classes.cardRoot}>
+                <Card className={classes.cardRoot} key={item._id}>
                   <div className={classes.discountDiv}>
                     <Typography
                       className={classes.discountText}
@@ -175,12 +178,16 @@ const DiscountProduct = () => {
                     className={classes.media}
                     image={`${item.images[0]}`}
                     title="Shop Product"
+                    onClick={() =>
+                      history.push(`/shop/${item.productName}/${item._id}`)
+                    }
                   />
                   <CardContent>
                     <Box className={classes.productTypesBox}>
                       {item.types && item.types.length > 0 ? (
-                        item.types.map((type) => (
+                        item.types.map((type, index) => (
                           <div
+                            key={index}
                             style={{
                               width: "13px",
                               height: "13px",

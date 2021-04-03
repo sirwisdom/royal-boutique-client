@@ -20,8 +20,6 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.1.0",
-    "react-id-swiper": "^4.0.0",
-    "react-image-gallery": "^1.0.8",
     "react-multi-carousel": "^2.6.2",
     "react-number-format": "^4.4.1",
     "react-paystack": "^3.0.2",

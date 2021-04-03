@@ -152,7 +152,7 @@ export default function SignUp() {
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6} md={6} lg={6}>
                     <TextField
-                      classesName={classes.textField}
+                      className={classes.textField}
                       variant="outlined"
                       error={errors.firstName && touched.firstName}
                       helperText={touched.firstName && errors.firstName}
@@ -169,7 +169,7 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12} sm={6} md={6} lg={6}>
                     <TextField
-                      classesName={classes.textField}
+                      className={classes.textField}
                       variant="outlined"
                       error={errors.lastName && touched.lastName}
                       helperText={touched.lastName && errors.lastName}
@@ -186,7 +186,7 @@ export default function SignUp() {
 
                   <Grid item xs={12} sm={12}>
                     <TextField
-                      classesName={classes.textField}
+                      className={classes.textField}
                       variant="outlined"
                       error={errors.email && touched.email}
                       helperText={touched.email && errors.email}
@@ -203,7 +203,7 @@ export default function SignUp() {
 
                   <Grid item xs={12} sm={12}>
                     <TextField
-                      classesName={classes.textField}
+                      className={classes.textField}
                       variant="outlined"
                       error={errors.password && touched.password}
                       helperText={touched.password && errors.password}
