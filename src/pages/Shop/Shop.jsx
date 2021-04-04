@@ -291,30 +291,30 @@ function Shop() {
     filteredProducts = [...allProducts];
   }
   if (!loading && selectedCategory) {
-    filteredProducts = filteredProducts.filter(
+    filteredProducts = filteredProducts?.filter(
       (item) => item.category && item.category._id === selectedCategory
     );
   }
 
   if (!loading && selectedSubCategory) {
-    filteredProducts = filteredProducts.filter(
+    filteredProducts = filteredProducts?.filter(
       (item) => item.subCategory && item.subCategory._id === selectedSubCategory
     );
   }
 
   if (!loading && selectedPrice) {
-    filteredProducts = filteredProducts.filter(
+    filteredProducts = filteredProducts?.filter(
       (item) => item.price && item.price >= selectedPrice
     );
   }
   if (!loading && selectedSize) {
-    filteredProducts = filteredProducts.filter(
+    filteredProducts = filteredProducts?.filter(
       (item) =>
         item.size && item.size.toLowerCase() === selectedSize.toLowerCase()
     );
   }
   if (!loading && selectedBrand) {
-    filteredProducts = filteredProducts.filter(
+    filteredProducts = filteredProducts?.filter(
       (item) =>
         item.brand && item.brand.toLowerCase() === selectedBrand.toLowerCase()
     );
@@ -416,8 +416,8 @@ function Shop() {
                         <ItemSkeleton key={index} />
                       ))
                     : filteredProducts &&
-                      filteredProducts.length > 0 &&
-                      filteredProducts.map((item, index) => {
+                      filteredProducts?.length > 0 &&
+                      filteredProducts?.map((item, index) => {
                         return (
                           <Grid key={index} item xs={12} sm={4} md={4} lg={4}>
                             <Card className={classes.cardRoot}>
@@ -530,7 +530,7 @@ function Shop() {
                           </Grid>
                         );
                       })}
-                  {!loading && filteredProducts.length === 0 && (
+                  {!loading && filteredProducts?.length === 0 && (
                     <Box className={classes.noProductBox} p={3}>
                       <Typography variant="h6">
                         Sorry, No Products Match Your Search...

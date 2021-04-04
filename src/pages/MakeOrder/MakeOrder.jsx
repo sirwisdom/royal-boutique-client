@@ -29,6 +29,7 @@ import {
   removeItemFromCart,
   incrementCartItem,
   decrementCartItem,
+  clearCart,
 } from "../../redux/actions/cartActions";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
@@ -38,6 +39,7 @@ import { ordersApiEndpoint } from "../../Utils/config";
 import paystackImage from "../../Assets/paystack.png";
 import nigeriaStates from "../../Utils/NigeriaStates";
 import MetaDecorator from "../../components/MetaDecorator/MetaDecorator";
+import swal from "sweetalert";
 
 const initialValues = {
   phone: "",
@@ -232,19 +234,17 @@ function MakeOrder() {
       .post(`${ordersApiEndpoint}`, data)
       .then((res) => {
         const { data } = res;
-
-        if (res.data && res.data.message) {
-          dispatch(
-            setSnackbar(`Order have been placed successfully`, "success")
-          );
-        } else {
-          dispatch(setSnackbar(`${res.data.message}`, "success"));
-        }
+        swal(
+          "THANK YOU",
+          "Your order have been made, go to your dashboard and pay for your order"
+        );
         helpers.setSubmitting(false);
 
-        // setTimeout(() => {
-        //   helpers.resetForm();
-        // }, 3000);
+        setTimeout(() => {
+          helpers.resetForm();
+          history.push(`/dasboard/my-orders/order-detail/${data._id}`);
+          dispatch(clearCart());
+        }, 2000);
       })
       .catch((err) => {
         helpers.setSubmitting(false);

@@ -98,7 +98,7 @@ export function logOutUser() {
     localStorage.removeItem("WISDOM_BOUTIQUE_TOKEN");
     delete axios.defaults.headers.common["Authorization"];
     dispatch({ type: "LOGOUT_USER" });
-    window.location.href = "/login";
+    window.location.href = "/";
   };
 }
 

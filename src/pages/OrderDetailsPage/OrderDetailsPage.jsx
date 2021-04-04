@@ -13,7 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 // import PrintIcon from "@material-ui/icons/Print";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import NumberFormat from "react-number-format";
 import { ordersApiEndpoint } from "../../Utils/config";
 import Preloader from "../../components/Preloader/Preloader";
@@ -22,7 +22,14 @@ import dayjs from "dayjs";
 import OrderCancelDialog from "./OrderCancelDialog";
 // import OrderPaymentDialog from "./OrderPaymentDialog";
 import { setSnackbar } from "../../redux/actions/uiActions";
-// import { authenticateCustomerCare } from "../../utils/customerCareAuth";
+import { PaystackButton } from "react-paystack";
+import swal from "sweetalert";
+
+let config = {
+  email: "",
+  amount: 100000,
+  publicKey: process.env.REACT_APP_LIVE_PUBLIC_KEY,
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,8 +89,14 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.grey[50],
     fontFamily: "Poppins, sans-serif",
     background: theme.palette.yellow.dark,
+    padding: theme.spacing(1.5, 5),
+    border: "none",
+    borderRadius: "27px",
+    cursor: "pointer",
+    outline: "none",
     [theme.breakpoints.down("xs")]: {
       width: "100%",
+
       marginBottom: theme.spacing(2),
     },
   },
@@ -148,31 +161,17 @@ function OrderDetailsPage(props) {
 
   const [orderDetail, setOrderDetail] = useState({});
   const [openCancelOrderDialog, setOpenCancelOrderDialog] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const [hasChange, setHasChange] = useState(false);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+  const userData = useSelector((state) => state.user.data);
   const handleCloseOrderDialog = () => {
     setOpenCancelOrderDialog(false);
   };
 
   const classes = useStyles();
-
-  const toggleHasChange = () => {
-    setHasChange(!hasChange);
-  };
-
-  // const handlePrintOrderDetail = () => {
-  //   const printableElements = document.getElementById("printArea").innerHTML;
-  //   const orderDetailsHTML =
-  //     "<html><head><title></title></head><body>" +
-  //     printableElements +
-  //     "</body></html>";
-  //   const oldPage = document.body.innerHTML;
-  //   document.body.innerHTML = orderDetailsHTML;
-  //   window.print();
-  //   document.body.innerHTML = oldPage;
-  // };
 
   useEffect(() => {
     axios
@@ -196,6 +195,59 @@ function OrderDetailsPage(props) {
     description: "",
     keywords: "",
   };
+
+  const toggleHasChange = () => {
+    setHasChange(!hasChange);
+  };
+
+  if (!loading && orderDetail && orderDetail.amount) {
+    config.amount = orderDetail.amount * 100;
+    config.email = userData.email;
+  }
+  const handlePaystackSuccessAction = (reference) => {
+    let values = {};
+    values.reference = reference && reference.reference;
+    values.amount = reference.amount / 100;
+    values.isPaid = true;
+
+    setSubmitting(true);
+    axios
+      .put(`${ordersApiEndpoint}/payment/${orderId}`, values)
+      .then((res) => {
+        console.log("reeee", res);
+        setSubmitting(false);
+        swal(
+          "THANK YOU",
+          "Your payment have been received, your goods will get to you soonest"
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        setSubmitting(false);
+      });
+  };
+
+  const handlePaystackCloseAction = () => null;
+
+  const componentProps = {
+    ...config,
+    text: "Make Payment",
+    onSuccess: (reference) => handlePaystackSuccessAction(reference),
+    onClose: handlePaystackCloseAction,
+  };
+
+  // const handlePrintOrderDetail = () => {
+  //   const printableElements = document.getElementById("printArea").innerHTML;
+  //   const orderDetailsHTML =
+  //     "<html><head><title></title></head><body>" +
+  //     printableElements +
+  //     "</body></html>";
+  //   const oldPage = document.body.innerHTML;
+  //   document.body.innerHTML = orderDetailsHTML;
+  //   window.print();
+  //   document.body.innerHTML = oldPage;
+  // };
+
   return loading ? (
     <Preloader />
   ) : (
@@ -623,31 +675,33 @@ function OrderDetailsPage(props) {
           <Box className={classes.buttons} mb={3} mt={2}>
             <div>
               {orderDetail.isPaid ? null : (
-                <Button
-                  variant="contained"
-                  className={classes.paymentButton}
-                  onClick={() => setOpenCancelOrderDialog(true)}
-                >
-                  Make Payment
-                </Button>
+                <div style={{ display: "inline" }}>
+                  {submitting ? null : (
+                    <PaystackButton
+                      className={classes.paymentButton}
+                      {...componentProps}
+                    />
+                  )}
+                </div>
               )}
             </div>
             <div>
-              {" "}
-              <Button
-                variant="contained"
-                className={classes.cancelButton}
-                disabled={
-                  (orderDetail && orderDetail.isDelivered) ||
-                  orderDetail.isCancelled
-                }
-                color="secondary"
-                onClick={() => setOpenCancelOrderDialog(true)}
-              >
-                {orderDetail && orderDetail.isCancelled
-                  ? "Cancelled"
-                  : "Cancel Order"}
-              </Button>
+              {orderDetail.isDelivered || orderDetail.isPaid ? null : (
+                <Button
+                  variant="contained"
+                  className={classes.cancelButton}
+                  disabled={
+                    (orderDetail && orderDetail.isDelivered) ||
+                    orderDetail.isCancelled
+                  }
+                  color="secondary"
+                  onClick={() => setOpenCancelOrderDialog(true)}
+                >
+                  {orderDetail && orderDetail.isCancelled
+                    ? "Cancelled"
+                    : "Cancel Order"}
+                </Button>
+              )}
             </div>
           </Box>
 
