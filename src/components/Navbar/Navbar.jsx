@@ -4,6 +4,7 @@ import logo from "../../Assets/mylogo.png";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
@@ -18,7 +19,7 @@ import { useSelector, useDispatch } from "react-redux";
 import routes from "../../Utils/routesLink";
 import SideDrawer from "./SideDrawer";
 import axios from "axios";
-import { usersApiEndPoint } from "../../Utils/config";
+import { usersApiEndPoint, productsApiEndpoint } from "../../Utils/config";
 import { logOutUser } from "../../redux/actions/userActions";
 
 const useStyles = makeStyles((theme) => ({
@@ -33,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
     width: "50px",
     overflow: "hidden",
     objectFit: "cover",
+    [theme.breakpoints.down("sm")]: {
+      width: "40px",
+    },
   },
   navLinkStyle: {
     display: "inline-block",
@@ -66,8 +70,11 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
+  InputBaseStyle: {
+    fontSize: "12.8px",
+  },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(1),
     display: "none",
     [theme.breakpoints.down("sm")]: {
       display: "block",
@@ -83,9 +90,6 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: "100%",
@@ -93,6 +97,40 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       marginLeft: theme.spacing(3),
       width: "auto",
+    },
+  },
+  searchInputWrapper: {
+    display: "flex",
+    alignItems: "center",
+    padding: theme.spacing(0.6),
+    [theme.breakpoints.up("md")]: {
+      width: "310px",
+    },
+    [theme.breakpoints.up("lg")]: {
+      width: "450px",
+    },
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+  },
+  searchResultDiv: {
+    position: "absolute",
+    // bottom: "-2px",
+    left: "0px",
+    width: "100%",
+    background: theme.palette.grey[900],
+    borderBottomLeftRadius: "12px",
+    borderBottomRightRadius: "12px",
+  },
+  searchResult: {
+    padding: theme.spacing(1),
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    background: theme.palette.grey[700],
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.15),
     },
   },
   searchIcon: {
@@ -146,7 +184,10 @@ export default function PrimarySearchAppBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [product, setProduct] = useState("");
   const [myData, setMyData] = useState({});
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
   const [loading, setLoading] = useState(true);
   const history = useHistory();
   const location = useLocation();
@@ -179,6 +220,18 @@ export default function PrimarySearchAppBar() {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const getFilteredProducts = () => {
+    if (!product) return;
+    axios
+      .post(`${productsApiEndpoint}/filteredProduct`, { productName: product })
+      .then((res) => {
+        setFilteredProducts(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const menuId = "primary-search-account-menu";
@@ -221,17 +274,49 @@ export default function PrimarySearchAppBar() {
             <img src={logo} alt="logo" className={classes.logo} />
           </div>
           <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+            <div className={classes.searchInputWrapper}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                className={classes.InputBaseStyle}
+                value={product}
+                onChange={(e) => {
+                  setProduct(e.target.value);
+                  setIsSearching(true);
+                }}
+                onKeyUp={() => getFilteredProducts()}
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ "aria-label": "search" }}
+              />
             </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
+            <div className={classes.searchResultDiv}>
+              {isSearching &&
+                product &&
+                filteredProducts &&
+                filteredProducts.length > 0 &&
+                filteredProducts.map((item, index) => (
+                  <div
+                    key={item._id}
+                    className={classes.searchResult}
+                    onClick={() => {
+                      setIsSearching(false);
+                      history.push(`/shop/${item.productName}/${item._id}`);
+                    }}
+                  >
+                    <Typography variant="subtitle2" noWrap component="span">
+                      {item.productName}
+                    </Typography>{" "}
+                    <Typography variant="subtitle2" noWrap component="span">
+                      {item?.category?.name}
+                    </Typography>{" "}
+                  </div>
+                ))}
+            </div>
           </div>
           <div className={classes.grow} />
 

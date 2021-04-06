@@ -211,6 +211,7 @@ function MakeOrder() {
   };
   let totalPrice = 0;
 
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const userData = useSelector((state) => state.user.data);
   const cartItems = useSelector((state) => state.cartReducer.cartItems);
 
@@ -297,8 +298,13 @@ function MakeOrder() {
     }
   };
 
-  return !cartItems || cartItems.length < 1 ? (
-    <Redirect to="/shop" />
+  useEffect(() => {
+    if (!cartItems || cartItems.length < 1) {
+      return history.push("/shop");
+    }
+  }, [cartItems, history]);
+  return !isAuthenticated ? (
+    <Redirect to="/login" />
   ) : (
     <div className={classes.root}>
       <MetaDecorator decorator={decorator} />

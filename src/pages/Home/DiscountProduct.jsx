@@ -136,7 +136,7 @@ const DiscountProduct = () => {
           <Typography
             gutterBottom
             className={classes.discountProductsTitle}
-            variant={matches ? "h5" : "h6"}
+            variant={matches ? "h5" : "body1"}
             align="center"
           >
             Check These Discounted Products Out

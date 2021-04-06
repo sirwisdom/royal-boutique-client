@@ -9,6 +9,8 @@ import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
+import IconButton from "@material-ui/core/IconButton";
+import FilterVintageRoundedIcon from "@material-ui/icons/FilterVintageRounded";
 import axios from "axios";
 // import ShopSingleItem from "../../components/ShopSingleItem/ShopSingleItem";
 import {
@@ -21,9 +23,11 @@ import ShopFilterSection from "./ShopFilterSection";
 import NumberFormat from "react-number-format";
 import { useHistory } from "react-router-dom";
 import MetaDecorator from "../../components/MetaDecorator/MetaDecorator";
+import MobileShopFilterDialog from "./MobileShopFilter";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    position: "relative",
     width: "100%",
     marginTop: theme.spacing(7),
     fontFamily: "Poppins, sans-serif",
@@ -174,6 +178,22 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  filterIconButton: {
+    display: "none",
+    position: "fixed",
+    right: "12px",
+    bottom: "12px",
+    background: theme.palette.yellow.dark,
+    color: theme.palette.grey[50],
+    transition: "all 0.6s linear",
+    zIndex: 35,
+    [theme.breakpoints.down("sm")]: {
+      display: "block",
+    },
+    "&:hover": {
+      background: theme.palette.grey[700],
+    },
+  },
 }));
 
 const ItemSkeleton = () => {
@@ -207,6 +227,7 @@ function Shop() {
   const [allProducts, setAllProducts] = useState([]);
 
   const [loadingCategories, setLoadingCategories] = useState(true);
+  const [openDialog, setOpenDialog] = useState(false);
   const [productCategories, setProductCategories] = useState([]);
   const [loadingFilters, setLoadingFilters] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -216,6 +237,13 @@ function Shop() {
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedPrice, setSelectedPrice] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
@@ -322,6 +350,23 @@ function Shop() {
 
   return (
     <div className={classes.root}>
+      <MobileShopFilterDialog
+        openDialog={openDialog}
+        handleCloseDialog={handleCloseDialog}
+        selectedCategory={selectedCategory}
+        handleCategoryChange={handleCategoryChange}
+        productCategories={productCategories}
+        subCategories={subCategories}
+        allProducts={allProducts}
+        handleBrandChange={handleBrandChange}
+        selectedBrand={selectedBrand}
+        handleSubCategoryChange={handleSubCategoryChange}
+        selectedSubCategory={selectedSubCategory}
+        selectedPrice={selectedPrice}
+        handlePriceChange={handlePriceChange}
+        handleSizeChange={handleSizeChange}
+        selectedSize={selectedSize}
+      />
       <MetaDecorator decorator={decorator} />
       <Box className={classes.shopHeaderBox} mb={2}>
         <Typography className={classes.shopTitle} variant="h3">
@@ -543,6 +588,12 @@ function Shop() {
           </Grid>
         </Box>
       </Container>
+      <IconButton
+        className={classes.filterIconButton}
+        onClick={handleOpenDialog}
+      >
+        <FilterVintageRoundedIcon />
+      </IconButton>
     </div>
   );
 }

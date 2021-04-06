@@ -1,15 +1,18 @@
 import React from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import Slider from "@material-ui/core/Slider";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
-import NumberFormat from "react-number-format";
 
 const GoldenRadio = withStyles((theme) => ({
   root: {
@@ -43,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
   radioLabelStyle: {
     fontFamily: "Poppins, sans-serif",
-    fontSize: "14px",
+    fontSize: "12.2px",
   },
   categoryHeadSkeletonStyle: {
     marginBottom: theme.spacing(0.4),
@@ -69,10 +72,13 @@ const useStyles = makeStyles((theme) => ({
   },
   filterTitle: {
     fontWeight: 600,
-    fontSize: "16px",
+    fontSize: "14px",
   },
   uppercase: {
     textTransform: "uppercase",
+  },
+  capitalize: {
+    textTransform: "capitalize",
   },
   productContainerBox: {
     width: "100%",
@@ -87,20 +93,16 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
   },
 }));
-
-const ShopFilterSection = (props) => {
+export default function MobileShopFilterDialog(props) {
   const {
+    handleCloseDialog,
+    openDialog,
     productCategories,
-    subCategories,
     handleCategoryChange,
     selectedCategory,
     allProducts,
     handleBrandChange,
     selectedBrand,
-    handleSubCategoryChange,
-    selectedSubCategory,
-    selectedPrice,
-    handlePriceChange,
     handleSizeChange,
     selectedSize,
   } = props;
@@ -152,133 +154,6 @@ const ShopFilterSection = (props) => {
     );
   };
 
-  let newSubCategories = [];
-  if (selectedCategory && subCategories && subCategories.length > 0) {
-    newSubCategories = subCategories.filter(
-      (i) => i.categoryId._id === selectedCategory
-    );
-  }
-  const renderSubCategories = () => {
-    return (
-      <Paper className={classes.categoryPaper} elevation={2}>
-        <Box pt={1} pb={1}>
-          {" "}
-          <Typography className={classes.filterTitle} variant="body1">
-            Sub Category{" "}
-          </Typography>
-          <Divider />
-          <FormControl component="fieldset">
-            <RadioGroup
-              aria-label="Category"
-              name="Category"
-              value={selectedSubCategory}
-              onChange={(e) => handleSubCategoryChange(e)}
-            >
-              {selectedCategory && newSubCategories.length > 0 && (
-                <FormControlLabel
-                  value=""
-                  control={<GoldenRadio size="small" />}
-                  label="All"
-                  className={classes.uppercase}
-                  classes={{ label: classes.radioLabelStyle }}
-                />
-              )}
-              {selectedCategory &&
-                newSubCategories.length > 0 &&
-                newSubCategories.map((item, idx) => (
-                  <FormControlLabel
-                    key={item._id}
-                    value={item._id}
-                    control={
-                      <GoldenRadio
-                        size="small"
-                        className={classes.radioInputStyle}
-                      />
-                    }
-                    label={item.name}
-                    classes={{ label: classes.radioLabelStyle }}
-                  />
-                ))}
-            </RadioGroup>
-          </FormControl>
-        </Box>
-      </Paper>
-    );
-  };
-  /* End Of renderSubCategories function */
-
-  /* Begining Of renderPrice function */
-  const renderPrice = () => {
-    let minPrice = 0;
-    let maxPrice = 0;
-    if (allProducts && allProducts.length > 0) {
-      minPrice = allProducts[0].price;
-      for (let i = 0; i < allProducts.length; i++) {
-        minPrice = Math.min(minPrice, allProducts[i].price);
-      }
-
-      for (let i = 0; i < allProducts.length; i++) {
-        if (allProducts[i].price) {
-          maxPrice = Math.max(maxPrice, allProducts[i].price);
-        }
-      }
-    }
-
-    return (
-      <Paper className={classes.categoryPaper} elevation={2}>
-        <Box pt={1} pb={1}>
-          {" "}
-          <Typography className={classes.filterTitle} variant="body1">
-            Filter Price
-          </Typography>
-          <Divider />
-          <br />
-          <Typography
-            gutterBottom
-            className={classes.filterPrice}
-            variant="caption"
-            component="span"
-          >
-            Selected Price:{" "}
-            {selectedPrice && selectedPrice > 0 ? (
-              <NumberFormat
-                value={selectedPrice}
-                displayType={"text"}
-                thousandSeparator={true}
-                renderText={(value) => (
-                  <Typography
-                    component="span"
-                    color="textPrimary"
-                    gutterBottom
-                    className={classes.filterPrice}
-                    variant="body1"
-                  >
-                    NGN{value}+
-                  </Typography>
-                )}
-              />
-            ) : null}
-          </Typography>
-          <Box mt={2}>
-            <Slider
-              classes={{ colorSecondary: classes.colorSecondaryOveride }}
-              min={minPrice}
-              step={100}
-              color="secondary"
-              valueLabelDisplay="off"
-              max={maxPrice}
-              value={selectedPrice}
-              onChange={handlePriceChange}
-              aria-labelledby="continuous-slider"
-            />
-          </Box>
-        </Box>
-      </Paper>
-    );
-  };
-
-  /* End Of renderPrice function */
-
   const renderSizes = () => {
     let sizesSet = new Set();
     if (allProducts && allProducts.length > 0) {
@@ -314,21 +189,23 @@ const ShopFilterSection = (props) => {
               />
               {sizeList &&
                 sizeList.length > 0 &&
-                sizeList.map((item, idx) => (
-                  <FormControlLabel
-                    className={classes.uppercase}
-                    key={idx}
-                    value={item}
-                    control={
-                      <GoldenRadio
-                        size="small"
-                        className={classes.radioInputStyle}
-                      />
-                    }
-                    label={item}
-                    classes={{ label: classes.radioLabelStyle }}
-                  />
-                ))}
+                sizeList
+                  .slice(0, 5)
+                  .map((item, idx) => (
+                    <FormControlLabel
+                      className={classes.uppercase}
+                      key={idx}
+                      value={item}
+                      control={
+                        <GoldenRadio
+                          size="small"
+                          className={classes.radioInputStyle}
+                        />
+                      }
+                      label={item}
+                      classes={{ label: classes.radioLabelStyle }}
+                    />
+                  ))}
             </RadioGroup>
           </FormControl>
         </Box>
@@ -336,7 +213,6 @@ const ShopFilterSection = (props) => {
     );
   };
 
-  /* End of render size function */
   const renderBrands = () => {
     let brandSet = new Set();
     if (allProducts && allProducts.length > 0) {
@@ -370,7 +246,7 @@ const ShopFilterSection = (props) => {
               {brandList &&
                 brandList.length > 0 &&
                 brandList
-                  .slice(0, 7)
+                  .slice(0, 5)
                   .map((item, idx) => (
                     <FormControlLabel
                       key={idx}
@@ -393,17 +269,34 @@ const ShopFilterSection = (props) => {
   };
 
   return (
-    // <div>
-    <Box className={classes.shopFilterSectionRoot}>
-      {renderCategories()}
-
-      {renderSubCategories()}
-      {renderPrice()}
-      {renderSizes()}
-      {renderBrands()}
-    </Box>
-    // </div>
+    <div>
+      <Dialog
+        fullScreen
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title" color="secondary">
+          SHOP PRODUCTS FILTER
+        </DialogTitle>
+        <DialogContent>
+          {renderCategories()}
+          {renderSizes()}
+          {renderBrands()}
+        </DialogContent>
+        <DialogActions>
+          <Button
+            className={classes.capitalize}
+            variant="contained"
+            onClick={handleCloseDialog}
+            color="primary"
+            size="small"
+          >
+            Close
+          </Button>
+        </DialogActions>
+        <br />
+      </Dialog>
+    </div>
   );
-};
-
-export default ShopFilterSection;
+}

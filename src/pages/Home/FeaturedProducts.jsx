@@ -115,7 +115,7 @@ const FeaturedProducts = () => {
           <Typography
             gutterBottom
             className={classes.featuredProductsTitle}
-            variant={matches ? "h5" : "h6"}
+            variant={matches ? "h5" : "body1"}
           >
             Check These Featured Products Out
           </Typography>

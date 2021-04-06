@@ -312,6 +312,11 @@ const SingleProductDetail = (props) => {
                 Brand: {productData?.brand}
               </Typography>
             </Box>
+            <Box mt={3}>
+              <Typography variant="body1">
+                Size: {productData?.size.toUpperCase()}
+              </Typography>
+            </Box>
             <Box mt={3} mb={2}>
               <Typography
                 variant="body1"
