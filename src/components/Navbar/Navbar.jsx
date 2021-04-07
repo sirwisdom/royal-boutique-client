@@ -132,6 +132,12 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: fade(theme.palette.common.white, 0.15),
     },
+    [theme.breakpoints.down("xs")]: {
+      width: "300px",
+      right: "19px",
+
+      transform: "translateX(-35%)",
+    },
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -280,6 +286,7 @@ export default function PrimarySearchAppBar() {
               </div>
               <InputBase
                 className={classes.InputBaseStyle}
+                onBlur={() => setIsSearching(false)}
                 value={product}
                 onChange={(e) => {
                   setProduct(e.target.value);
