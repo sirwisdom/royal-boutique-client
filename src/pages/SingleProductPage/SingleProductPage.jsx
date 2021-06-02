@@ -173,7 +173,6 @@ const SingleProductDetail = (props) => {
     axios
       .get(`${productsApiEndpoint}/${productId}`)
       .then((res) => {
-        console.log("single;propsdruct", res.data);
         setProductData(res.data);
         setLoading(false);
       })

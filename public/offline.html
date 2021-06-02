@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Offline - Wizzy Shop</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      .offline-containr {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 9px;
+        height: 100vh;
+      }
+      .offline-inner {
+        max-width: 880px;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 9px;
+        background: rgba(255, 255, 213, 0.8);
+        backdrop-filter: blur(40px);
+        box-shadow: 2px 2px 2px rgb(245, 231, 245);
+      }
+      .offline-header {
+        margin-bottom: 8px;
+        color: rgb(224, 155, 4);
+        text-align: center;
+      }
+      .offline-text {
+        text-align: center;
+      }
+      @media (max-width: 7442px) {
+        .offline-header {
+          font-size: 23px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="offline-containr">
+      <div class="offline-inner">
+        <h1 class="offline-header">Offline - No Internet Available</h1>
+        <p class="offline-text">
+          Oops, it seems you are not currently connected to the Internet, kindly
+          check your Internet connection and try again.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
