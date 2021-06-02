@@ -489,8 +489,9 @@ function Shop() {
                               <CardContent className={classes.cardContent}>
                                 <Box className={classes.productTypesBox}>
                                   {item.types && item.types.length > 0 ? (
-                                    item.types.map((type) => (
+                                    item.types.map((type, index) => (
                                       <div
+                                        key={index}
                                         style={{
                                           width: "12px",
                                           height: "12px",
