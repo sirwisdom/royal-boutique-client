@@ -6,10 +6,32 @@
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
+    },
+    {
+      "src": "logo48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "logo96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "logo144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "logo196.png",
+      "sizes": "196x196",
+      "type": "image/png"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
+  "scope": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "description": "A.E Wisdom Final Year Project- PWA E-Commerce Shop"
 }
