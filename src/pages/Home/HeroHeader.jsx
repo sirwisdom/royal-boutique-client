@@ -138,8 +138,8 @@ const HeroHeader = () => {
                   component="p"
                   className={classes.heroHeaderInfoText}
                 >
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Vitae esse quas, id deserunt accusantium nisi sunt laudantium!
+                  We provide a unique collection of wears that makes every women
+                  stand out like the star they are meant to be and nothing less.
                 </Typography>
                 <Button
                   className={classes.womenBtn}
@@ -191,8 +191,9 @@ const HeroHeader = () => {
                   component="p"
                   className={classes.heroHeaderInfoText}
                 >
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Vitae esse quas, id deserunt accusantium nisi sunt laudantium!
+                  We got your taste covered anytime, ranging from all male to
+                  female, kids and unisex. Just to make you feel good and give
+                  you the treatment you deserve
                 </Typography>
                 <Button
                   className={classes.womenBtn}
@@ -233,8 +234,8 @@ const HeroHeader = () => {
                   component="p"
                   className={classes.heroHeaderInfoText}
                 >
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Vitae esse quas, id deserunt accusantium nisi sunt laudantium!
+                  Every child is a gift, a beautiful gem to behold and cherish,
+                  they should be treaded as such without any reservation.
                 </Typography>
                 <Button
                   className={classes.kidsBtn}
